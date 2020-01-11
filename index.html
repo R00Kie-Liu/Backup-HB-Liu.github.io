@@ -299,7 +299,49 @@
       
         
           
-            
+            <p>注：部分转载于<a href="https://www.jianshu.com/p/d5c968e0e194" target="_blank" rel="noopener">https://www.jianshu.com/p/d5c968e0e194</a>（博主：月牙眼的楼下小黑）</p>
+<p>发表于：<strong><code>ICLR 2018 (Poster)</code></strong><br>代码地址：<a href="https://github.com/SaoYan/LearnToPayAttention" target="_blank" rel="noopener">https://github.com/SaoYan/LearnToPayAttention</a></p>
+<p>论文类型：<strong>注意力机制</strong>用于分类网络</p>
+<hr>
+<p><strong>摘要</strong>：提出一种注意力生成机制，使用全局特征（global feature）为不同尺度上的特征图（local feature）生成Attention Map， 强制网络仅使用不同尺度的Local feature结合对应的Attention Map进行最终分类，并使得不同scale的Attention map关注图像不同的区域，互相补充。</p>
+<hr>
+<p><strong>亮点</strong>： </p>
+<ul>
+<li>全局特征被视作一种<strong>Query</strong>, 直接影响Attention maps的生成</li>
+<li>不同scale的Attention map关注图像不同的区域，互相补充</li>
+<li>强制网络仅使用local features进行分类</li>
+<li>使用了不同尺度上的特征进行融合</li>
+</ul>
+<hr>
+<p><strong>模型概览</strong>：<br><img src="https://upload-images.jianshu.io/upload_images/18474746-8bffa6bd8f971d0b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="注意力机制"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/18474746-8a0d27be9757ea8e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="VGG网络流程"></p>
+<p><strong>流程概述</strong>：<br>如上图所示，<code>L: [L1、L2、L3]</code>分别为VGG网络中不同尺度下的中间特征输出（local feature，原属于VGG网络的最终分类层<code>FC-2, 10</code>被移除，全连接层<code>FC-1, 512</code>的输出<code>G</code>即被视作全局特征 （global feature），<code>Attention Estimator</code>接收<code>Ln</code>和<code>G</code>作为输入，计算出Attention map, Attention map作用于<code>Ln</code>的每一个channel得到 Weighted local feature <code>L&#39;n</code>。各个scale下的<code>L&#39;n</code>进行concat之后得到<code>L&#39;:[L&#39;1、L&#39;2、L&#39;3]</code>，最后将<code>L&#39;</code>送入全连接层分类器<code>FC-2, 10</code>进行最终分类。</p>
+<hr>
+<p><strong>关键操作和细节</strong>：</p>
+<ul>
+<li>Attention map 具体如何计算得到？<br><code>论文中提出了两种方法通过L和G来计算Attention map</code>：</li>
+<li><em><code>1.有参法(parameterised)</code>*</em>：<code>将两个张量逐元素相加后，再经过一个线性映射（1x1的卷积）学习Attention map， 下式中u即代表学习到的线性映射</code><br><img src="https://upload-images.jianshu.io/upload_images/18474746-d372dd85afc0a1d2.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="有参法"></li>
+<li><em><code>2.点乘法(dot-product-based)</code>*</em>: <code>将两个张量直接做点乘得到Attention map</code><br><img src="https://upload-images.jianshu.io/upload_images/18474746-557223ae032f6b7e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="点乘法"></li>
+<li>Attention Estimator 的输入为维度不一定相同的<code>G</code>和<code>L</code>/不同的中间输出特征<code>G</code>之间维度不同，如何处理？<br><code>使用映射函数(project function)，将特征映射到相同维度(相同通道数)，具体的操作即为使用1x1的卷积对特征进行升/降维，论文源码将中间层输出特征都映射为和全局特征维度一致。</code></li>
+</ul>
+<hr>
+<p><strong>思想</strong>：<br>1.利用Attention map来确认和寻找那些有效支持CNN模型做出选择的区域（这和CAM的想法类似），这个方法的一个重要前提假设是：<code>施加更多的关注在图像的显著性区域上，同时减轻对那些不相关或者易混淆区域的关注</code>是对分类有益的；<code>对图像更集中和简洁的使用更有助于数据分布发生变化时网络的鲁棒性</code>。<br>2.本文中Attention map其实是local feature和global feature间的<code>compatibility</code>的表现形式，两类特征的<code>compatibility（兼容性）</code>由上文提到的有参法或者点乘法得到。每个<code>compatibility</code>作为中间特征的注意力权重。<br>3.通过强制使用中间特征输出的集合进行分类，强制使得网络去学习解决当前任务的特定的Attention模式。</p>
+<hr>
+<p><strong>实验</strong>：<br>作者分别在分类任务、细粒度图像分类任务、弱监督分割任务、对抗样本攻击、跨领域图像分类任务上进行了实验，均取得了不错的结果。</p>
+<ul>
+<li>细粒度图像分类：作者在鸟类数据集上进行实验，不同scale的Attention区域关注鸟的不同身体部位。</li>
+<li>弱监督分割任务：不同特征图的Attention map关注目标的不同区域，互相补充，多张Attention map能够更精准、更完整地覆盖目标区域。</li>
+<li>对抗样本攻击：模型对对抗样本的鲁棒性更强了。</li>
+<li>跨领域图像分类：模型特征提取能力更易迁移。</li>
+</ul>
+<p>除此之外，作者还对生成Attention map的两种方法进行了实验分析，分析了两种方法的不同。<br><img src="https://upload-images.jianshu.io/upload_images/18474746-0946f9a603d589e1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Query-driven attention"><br>如上图所示，先利用一幅 <code>target image</code>的 global vector 和 local feature map 产生 attention map (第三、六列), 然后再选取另一张图片作为 <code>query image</code>, 利用 <code>query image</code> 的 global vector 和 target image 的 local feature map 产生 attention map( 第四、七列) ， 比较两个attention map 的异同（第五、八列）。</p>
+<ul>
+<li>对于<code>点乘法</code>产生Attention map来说，global feature直接影响Attention map的生成，会使得网络关注和<code>query image</code>中目标相同类别的目标区域；</li>
+<li>而对于<code>有参法</code>来说，global feature对Attention map几乎没有影响，作者得出的结论是有参法学习到的映射函数的权重<code>u</code>能够去学习目标为中心的高阶特征，这些特征能够较好地进行从训练数据泛化到验证数据，因为它们的类别相似；还有一个原因就是<code>global feature</code>和<code>local feature</code>在数值量级上差距过大。</li>
+</ul>
+<hr>
+<p><strong>一些启示</strong>：<br>一开始看到这篇论文并没有觉得非常solid或者有什么insight，在仔细阅读完整篇论文之后有所改观。作者不仅仅是使用不同尺度的中间特征来进行分类，而是以<code>global feature</code>作为一种<code>Query</code>来控制中间特征需要关注的区域。<br>还有一个值得注意的点：作者提到全局特征和局部特征数值量级差距过大，这需要我在实验中被进一步证实，如果属实，那在对中间特征和全局特征进行融合或者拼接时应该考虑进行归一化操作。</p>
+
           
         
       
