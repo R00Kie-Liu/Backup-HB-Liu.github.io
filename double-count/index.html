@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="图论——概率方法, 深度不学习">
+    <meta name="keywords" content="图论笔记——双计数, 深度不学习">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>图论——概率方法 | 深度不学习</title>
+    <title>图论笔记——双计数 | 深度不学习</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -242,12 +242,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">图论——概率方法</h1>
+                    <h1 class="description center-align post-title">图论笔记——双计数</h1>
                 </div>
             </div>
         </div>
@@ -368,8 +368,8 @@
                                 <span class="chip bg-color">图论</span>
                             </a>
                         
-                            <a href="/tags/%E6%A6%82%E7%8E%87%E6%96%B9%E6%B3%95/">
-                                <span class="chip bg-color">概率方法</span>
+                            <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/">
+                                <span class="chip bg-color">组合数学</span>
                             </a>
                         
                     </div>
@@ -393,7 +393,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-05
+                    2020-07-06
                 </div>
                 
 
@@ -402,14 +402,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.4k
+                    4.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    22 分
+                    20 分
                 </div>
                 
 
@@ -424,197 +424,231 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="图论笔记——概率方法"><a href="#图论笔记——概率方法" class="headerlink" title="图论笔记——概率方法"></a>图论笔记——概率方法</h3><h4 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h4><p>证明存在性，有两种思路：</p>
-<ul>
-<li>构造性：直接构造出需要证明存在的目标</li>
-<li>非构造性：往往很难直接构造，所以采用非构造性方法，比如归纳等；概率方法就属于非构造性方法</li>
+                <h3 id="图论笔记——双计数"><a href="#图论笔记——双计数" class="headerlink" title="图论笔记——双计数"></a>图论笔记——双计数</h3><h4 id="1-握手定理"><a href="#1-握手定理" class="headerlink" title="1. 握手定理"></a>1. 握手定理</h4><h5 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h5><ul>
+<li>握手定理： 对于图 $G= (V,E)$ ， 有 $\sum_{v\in V}d(v) = 2|E|$</li>
 </ul>
-<p>概率方法 (<strong>probabilistic method</strong>) 是解决许多离散的数学问题的有效工具。</p>
-<p>概率方法按往往以下流程作用：尝试证明具有某种良好性质的结构存在，可以<strong>定义一个恰当的概率空间</strong>，接下来去<strong>证明该结构在该概率空间存在的概率大于0，那么该结构一定存在</strong></p>
-<blockquote>
-<p><strong>生日悖论问题</strong></p>
-<p>23 个人里有两个生日相同的人的概率有多大呢？居然有 50%。不计特殊的年月，如 2 月 29 日。于是一年中有 N = 365 天。设房间里有 n 个人，要计算所有人的生日都不相同的概率。那么第一个人的生日是 365 选 365，第二个人是 365 选 364，第三个人 365 选 363 …… 第 n 个人的生日是 365 选 365-(n-1)。所以所有人生日都不相同的概率为<br>$$<br>1-P=\frac{365}{365} \times \frac{364}{365} \times \cdots \times \frac{365-n+1}{365}=\frac{365 !}{365^{n}(365-n) !}<br>$$<br>这里 n! 表示 n 的阶乘。那么，n 个人中有至少两个人生日相同的概率就是 P。将 n 与 P 的关系列入下表：</p>
-<p><img src="https://i.loli.net/2020/07/05/eNHlcAX85Ebf9mh.png"  style="zoom:50%;" /></p>
-<p>可以看到 n = 100 远小于 N = 365 时，就已经几乎必然有一对生日相同，所有人生日两两不同的概率仅一千万分之三。</p>
-</blockquote>
-<hr>
-<h4 id="2-最小支配集"><a href="#2-最小支配集" class="headerlink" title="2. 最小支配集"></a>2. 最小支配集</h4><p>支配集 (<strong>Dominating set</strong>) ：对于一个无向图 $G(V,E)$，支配集 $U\subseteq V$, 它使得集合 $V-U$ 中的所有顶点都至少有一个邻居是 $U$ 中的点</p>
-<p>对于以下无向图，$\{v_4,v_5\}$ 为一个支配集，其中顶点 $\{v_1,v_2,v_3\}$ 被 $v_4$ 支配，$v_6$ 被 $v_5$ 支配</p>
-<p><img src="https://i.loli.net/2020/07/05/hVaZceS1qpJLoXk.png" style="zoom:40%;" /></p>
-<p>在图论中，我们往往对<strong>最小支配集</strong>感兴趣，有以下定理</p>
-<blockquote>
-<p><strong>最小支配集存在性定理</strong>：对于图 $G(V,E), |V|=n$, 它的最小度 $\delta &gt; 1$. 那么图 $G$ 一定存在一个最多有 $n[1+ln(\delta+1)]/(\delta+1)$ 顶点的支配集。</p>
-</blockquote>
-<blockquote>
-<p><strong>证明</strong>：令 $X$ 为随机选取的一个顶点子集合（每个顶点以随机概率 $p\in[0,1]$ 选取），$Y=Yx$ 为点集合 $V-X$ 中没被 $X$ 支配的点构成的集合。接下来计算 $X,Y$ 的数学期望：<br>$$<br>E(|X|) = E(\sum I_v) = n·p<br>$$<br>其中 $I_v$ 为指示变量，表示是否被选中</p>
-<p>对于任意 $v \in Y$, $Pr[v \in Y] = Pr[v 和它所有 neighbors 不在X中] = (1-p)^{d(v)+1} \leq (1-p)^{\delta +1}$ . </p>
-<p>$E(|Y|)$ 可写作一系列指示变量的和：$E(|Y|) = \sum X_v$,  其中 $X_v=1$ if $v$ in $Y$, otherwise $X_v=0$</p>
-<p>则：<br>$$<br>E(|X|+|Y|)\leq np + n(1-p)^{\delta+1}<br>$$</p>
-<p>集合 $U=X \cup Y$ 显然是图 $G$ 的一个支配集.</p>
-<p>以上推论对于所有 $p\in [0,1]$ 都是成立的。我们用上式对 $p$ 求导，为了方便计算，我们使用估计式：$1-p \leq e^{-p}$, 则可以得到精简式：<br>$$<br>E(|U|) = E(|X| + |Y|) \leq np + ne^{-p(\delta+1)}<br>$$<br>对 $p$ 求导并等于 0 解得：<br>$$<br>p ^{*} = \frac{ln(\delta+1)}{\delta+1}<br>$$<br>将最优值带入 $|U|$ 中，得：<br>$$<br>E(|U|) \leq n[1+ln(\delta+1)]/(\delta+1)<br>$$<br>证毕。</p>
-</blockquote>
-<p>注：最小支配集也可以使用<strong>贪心算法</strong>进行求解（在贪心算法章节有详细介绍）</p>
-<hr>
-<h4 id="3-核心思想"><a href="#3-核心思想" class="headerlink" title="3. 核心思想"></a>3. 核心思想</h4><p>(1) 数学期望的<strong>线性</strong>性： $E(|X|+|Y|) = E(X) + E(Y)$, $X$ 和 $Y$ 不独立时候也成立。$\rightarrow$ 善用指示变量</p>
-<p>(2) <strong>可变</strong>性质 （<strong>Alteration</strong> principle）：支配集不是直接得到的，而是通过不断修改 $X$ （将 $Y$ 并入），最后得到支配集 $X$。在概率方法中，可变可通过添加(支配集问题)或者删除(Zarankiewicz问题)得到。</p>
-<p>(3) 最优的 $p$ 值选择：顶点选择的概率 $p$ 起初是无法直接确定的。概率方法的思想就是将 $p$ 作为结果的参数，最后进行优化得到 $p^{*}$。 优化的过程中求解到最优解的精确解可能非常困难，可以去寻找一个次优解/近似解（ $1-p\leq e^{-p}$）</p>
-<hr>
-<h4 id="4-Zarankiewicz问题"><a href="#4-Zarankiewicz问题" class="headerlink" title="4. Zarankiewicz问题"></a>4. Zarankiewicz问题</h4><p>Zarankiewicz问题：如何使得 $n\times n$ 矩阵中不存在 $a \times a$ 的全 1 子矩阵</p>
-<p>在双计数章节中，我们已经用双计数的思想解决了这个问题，接下来我们使用概率方法求解。</p>
-<blockquote>
-<p>概率方法求解：对于 $n \times n $ 的 0-1矩阵，出现 $a\times a$ 全 1 子矩阵的数量的数学期望为：<br>$$<br>E = \left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right)\left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right) · p^{a^2}<br>$$<br>矩阵中元素为 $1$ 的元素的数量的数学期望为：<br>$$<br>n^2·p<br>$$</p>
-<p>其中 $p$ 为矩阵中元素为 $1$ 的概率。</p>
-<p>而我们不希望出现全 1 子矩阵，我们要通过“可变性质”来对全 1 子矩阵进行变换，即通过“删除”全1子矩阵中的某个元素 $1$ 来实现。之后，矩阵中剩余的 $1$ 的数量的期望为：<br>$$<br>n^2 ·p -\left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right)\left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right) · p^{a^2}<br>$$<br>该结果就是矩阵中为 1 的元素的数量的一个<strong>上界</strong>。</p>
-</blockquote>
-<hr>
-<h4 id="5-独立数-Independent-set"><a href="#5-独立数-Independent-set" class="headerlink" title="5. 独立数 Independent set"></a>5. 独立数 Independent set</h4><p>Recall：独立数 $\alpha(G)$ 和色素数量 $\chi(G)$ 的关系： $\chi(G)·\alpha(G) \geq n$</p>
-<blockquote>
-<p><strong>定理</strong>：若图 $G(V,E)$ 有 $n$ 个顶点和 $\frac{nd}{2}$ 条边($d\geq 1$), 那么必存在一个独立集，它包含的顶点数(独立数) $\alpha(G)\geq \frac{n}{2d}$</p>
-</blockquote>
-<blockquote>
-<p><strong>证明</strong>：首先构造子集合 $X$， 每个顶点被选进集合 $X$ 的概率为 $p$, 则集合 $X$ 的顶点数量的数学期望为：<br>$$<br>E(|X|) = n·p<br>$$<br>设集合 $X$ 中的边为 $e(x,y),x\in X, y \in X$, 即存在连线的两个顶点 $x,y$ 均被选入到集合 $X$ 中，概率为 $p^2$。 易知集合 $X$ 中边数量的数学期望为：<br>$$<br>E(|e|) = \frac{nd}{2} p^2<br>$$<br>要使得 $X$ 为独立集，我们只需要删除 $e(x,y)$ 上的任一顶点，<strong>最多需要</strong>删除 $E(|e|)$ 个顶点（因为有些顶点可能在多条边上）， 则独立集的大小的数学期望为：<br>$$<br>E(\alpha) \geq np - \frac{nd}{2}p^2<br>$$<br>要使得该期望值最大，只需对 $p$ 求导取 0 ， 解得 $p^<em> = \frac{1}{d}$, 带入 $E(\alpha)$, 得到：<br>$$<br>E(\alpha)^</em> \geq \frac{n}{2d}<br>$$</p>
-</blockquote>
-<p>注：在证明该问题中，用到的也是“删除”的思想</p>
-<hr>
-<h4 id="6-二分子图-Bipartite-subgraph"><a href="#6-二分子图-Bipartite-subgraph" class="headerlink" title="6. 二分子图 Bipartite subgraph"></a>6. 二分子图 Bipartite subgraph</h4><blockquote>
-<p><strong>定理</strong>： 若 $G(V,E)$ 为一个有 $n$ 个顶点和 $e$ 条边的图，那么 $G$ 必存在一个至少包含 $\frac{e}{2}$ 条边的二分子图 （注：这里的二分子图并不是严格意义上的二分图）</p>
-</blockquote>
-<blockquote>
-<p><strong>证明一（概率方法）</strong> ：首先构造随机子集合 $X$, 每个点被选入到 $X$ 的概率为 $\frac{1}{2}$, 则被选入 $V-X$ 的概率也为 $\frac{1}{2}$</p>
-<p>对于一条边 $e(x,y)$, 它为一条交叉的边的概率为 $2 · \frac{1}{2} ·\frac{1}{2} = \frac{1}{2}$， 共有 $n$ 条边</p>
-<p>则二分子图的边数 $\frac{e}{2}$</p>
-<p><strong>证明二 （启发式算法）</strong>：从图 $G$ 的一个任意划分 $V(G)$ 开始，它将图 $G$ 划分为两个子集 $X$ 和 $Y$ 。使用在每个子集都有一个端点的边来得到一个二分子图 $H$ 和它的两部分子集合 $X$ 和 $Y$</p>
-<p>假设二分子图 $H$ 中某个顶点 $v\in X$, 它的度 $d_H(v)&lt;\frac{d_G(v)}{2}$, 那么我们就将它从 $X$ 移动到 $Y$, 这样能够使得 $d_H(v) &gt; \frac{d_G(v)}{2}$。 </p>
-<p><img src="https://i.loli.net/2020/07/05/gRmI4YjadM5xlXF.png"  style="zoom:50%;" /></p>
-<p>我们为 $H$ 中所有的点重复这个过程，最后则有 $\forall v\in H, d_H(v) &gt; \frac{d_G(H)}{2}$。 最后根据握手定理我们可以得到：<br>$$<br>e(H) &gt; \frac{e(G)}{2}<br>$$</p>
-</blockquote>
-<p>有关该问题的一些讨论：<a href="https://mathoverflow.net/questions/90343/how-to-proof-every-loopless-graph-g-has-a-bipartite-subgraph-with-at-least-eg" target="_blank" rel="noopener">https://mathoverflow.net/questions/90343/how-to-proof-every-loopless-graph-g-has-a-bipartite-subgraph-with-at-least-eg</a></p>
-<hr>
-<h4 id="7-团数-Clique-number"><a href="#7-团数-Clique-number" class="headerlink" title="7.  团数 Clique number"></a>7.  团数 Clique number</h4><p>团数 $w(G)$ $\leftrightarrow$ 独立数 $\alpha(G)$：</p>
-<p>由团和独立集的关系可知，团数可以通过求解其补图 (补图即不相连的边转换为连接，相连的边删除) 的独立数得到。</p>
-<p><img src="https://i.loli.net/2020/07/05/IqSRJP8e1bDNim7.png" style="zoom:50%;" /></p>
-<blockquote>
-<p><strong>定理</strong>：若图 $G(V,E)$ 有 $n$ 个顶点，那么它的团数满足：<br>$$<br>w(G) \geq \sum_{v\in V} \frac{1}{n-d(v)}<br>$$<br><strong>证明</strong>： 首先选择一个随机的顶点排列 $\pi = v_1,v_2,v_3,…,v_n$， 每种排列出现的概率均为 $\frac{1}{n!}$. </p>
-<p>接着考虑集合 $C_{\pi}$, 如果 $v_i$ 和和排列在它之前的所有点都是 $v_j(j&lt;i)$邻接的，就将 $v_i$ 选入集合 $C_{\pi}$ 中. </p>
-<p>根据以上定义， $C_{\pi}$ 即为 $G$ 的一个 Clique. </p>
-<p>令 $X= |C_{\pi}|$ 为对于的随机变量，我们有：<br>$$<br>X = \sum_{i=1}^n X_i<br>$$<br>其中 $X_i$ 是 顶点 $v_i$ 的指示变量，即 $X_i=1 \space or \space 0$ 决定了 $v_i \in C_{\pi} \space or \space v_i \notin C_{\pi}$</p>
-<p>需要注意，当 $v_i \in C_{\pi}$ 时，意味着在当前排列中，$v_{i}$ 要排在其它 $n-1-d(v_i)$ 个和它不相连的点的前面，则对于点 $v_i$ 和这些不相连的点共 $n-d(v_i)$ 个点，每个点排在最前面的概率是相等的，所以 $v_i$ 排在最前的概率为：<br>$$<br>\frac{1}{n-d(v_i)}<br>$$<br>该概率也即顶点 $v_i$ 属于 $C_{\pi}$ 的概率；</p>
-<p>所以 $C_{\pi}$ 中顶点数量的数学期望为：<br>$$<br>\sum_{v\in V} \frac{1}{n-d(v)}<br>$$</p>
-</blockquote>
-<p>​    </p>
+<p>握手定理说明所有顶点的度数为两倍的边数（顶点之间握手相当于顶点间连一条边，一条边使得两个顶点都被握手）</p>
 <ul>
-<li><strong>思考题</strong>： 设 $F$ 为 $N=\{1,2,…,n\}$ 子集合的簇, 且假设不存在 $A,B\in F$ 满足 $A\subset B$. 令 $\sigma \in S_n$ 为元素数量为 $N$ 的随机排列，并考虑以下随机变量：</li>
+<li>推论： 图中奇度数点个数必为偶数</li>
 </ul>
-<p>$$<br>X = |\{i:\{\sigma(1),\sigma(2),…,\sigma(i)\}\in F|<br>$$</p>
-<p>请通过计算 $X$ 的期望来证明 $|F|\leq \left(\begin{array}{c}<br>n \\<br>\lfloor n / 2\rfloor<br>\end{array}\right)$</p>
-<blockquote>
-<p><strong>证明一（概率方法）</strong>：$\sigma_n$ 即对 $1,2,…,n$ 的重新排列(置换)：$\sigma(1),\sigma(2),…,\sigma(n)$ , 共有 $n!$ 种排列&gt;的可能</p>
-<p>设随机排列 $\{\sigma(1),\sigma(2),…,\sigma(i)\} \subseteq F$, 假设 $F$ 中 $i$ 元子集合个数为 $k_i$, &gt;则 $\sum_{i=1}^{n} k_i = |F|$</p>
-<p>由以上假设，可以写出对于任一随机排列 $\sigma_n={\sigma(1),…,\sigma(n)}$, 其中 $\{\sigma(1),\sigma(2),…,\sigma(i)\} \subseteq F$ 的概率为：</p>
-<p>$$<br>k_i \frac{i!(n-i)!}{n!}<br>$$</p>
-<p>对于 $F$ 中任一 $i$ 元子集合，能满足条件的 $\sigma_i$ 有 $i!$ 种，再选取后 $n-i$ 个序列置换构成 $\sigma_n$，则共有 $i!(n-i)!$ 种“有利事件”；而 $\sigma_n$ 的可能共有 $n!$ 种(事件总数)，则得到以上结果。</p>
-<p>所以，对于所有的 $i$， 由于不存在 $A,B \in F$ 使得 $A\subset B$, 这意味着统计的“有利事件”之间没有交叉，则以下不等式成立：<br>$$<br>\sum_{i=1}^n k_i\frac{i！(n-i)!}{n!} \leq 1<br>$$</p>
-<p>化简得<br>$$<br>\frac{\sum_{i=1}^{n}k_i}{\left(\begin{array}{c}<br>n \\<br>\lfloor n / 2\rfloor<br>\end{array}\right)} \leq \sum_{i=1}^n \frac{k_i}{C_n^i} \leq 1<br>$$<br>即：<br>$$<br>\sum_{i=1}^n k_i \leq \left(\begin{array}{c}<br>n \\<br>\lfloor n / 2\rfloor<br>\end{array}\right)<br>$$</p>
-<p><strong>证明二（计数思想）</strong>: </p>
-<p>假设一种集合包含关系的链： $\{0\}\subseteq A_1 \subseteq A_2 \subseteq … \subseteq X$易知这种最长链一共存在 $n!$ 条;</p>
-<p>又设集合 $A,B\in F$, 那包含集合 $A$ 的最长链  $\{0\}\subseteq A_1 \subseteq… \subseteq A \subseteq … \subseteq X$ 的数目为:<br>$$<br>|A|·(|A|-1)·(|A|-2)···1 · (n-|A|)! = |A| ! (n-|A|)!<br>$$<br>同理包含集合 $B$ 的最长链的数目为：<br>$$<br>|B|!(n-|B|)!<br>$$<br>由于不存在 $A,B \in F$ 使得 $A\subset B$， 所以这两个的最长链不存在交叉，则有：<br>$$<br>\sum_{A\in F} |A| (n-|A|)! \leq n!<br>$$<br>化简得：<br>$$<br>\sum_{A\in F} |A| \leq \left(\begin{array}{c}n \\\ \lfloor n / 2\rfloor\end{array}\right)<br>$$</p>
-</blockquote>
+<h5 id="1-2-从关联矩阵看握手定理"><a href="#1-2-从关联矩阵看握手定理" class="headerlink" title="1.2 从关联矩阵看握手定理"></a>1.2 从关联矩阵看握手定理</h5><p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526161218866.png"  style="zoom:35%;" /></p>
+<p>上图为图和它对应的 $5\times 6$ 关联矩阵。我们对于该关联矩阵来计数，每一行的和为<strong>该顶点的度数</strong> ，即为 $\sum_{v\in V} d(v)$ ;  每一列的和为<strong>边数×2</strong>，按行求和与按列求和结果一致，即推出握手定理。</p>
+<p><strong>从矩阵角度而言，双计数在于对关联矩阵中1的数目进行计数，可以按行计数，也可以按列计数。</strong></p>
+<h5 id="1-3-从集合角度看握手定理"><a href="#1-3-从集合角度看握手定理" class="headerlink" title="1.3 从集合角度看握手定理"></a>1.3 从集合角度看握手定理</h5><p>对于集合 $V=\{1,2,3,4,5\}, B=\{\{1,2\},\{2,3,4\},\{2,4,5\}\}$, $V$ 为视为<strong>点集合</strong>，$B$ 为视为<strong>超边集合</strong>，可以构造矩阵：</p>
+<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526161736325.png"  style="zoom:30%;" /></p>
+<p>矩阵中的每一行仍为每个点的度，每一列表示该边上的点（注意这里是存在超边的：超过两个点），对B进行计数握手定理仍然成立，等式右端表示对B中所有集合元素个数进行计数（若B不为超边，则每个子集合元素个数均为2，则为$2|E|$）：<br>$$<br>\sum_{v\in V}d(v) = \sum_{b \in B} |B|<br>$$<br>Note: 所以握手定理对于超边成立</p>
 <hr>
-<h4 id="8-色素数量和围长"><a href="#8-色素数量和围长" class="headerlink" title="8.  色素数量和围长"></a>8.  色素数量和围长</h4><p>Note: 该定理的完整说明与证明可见于书籍：<a href="https://link.springer.com/book/10.1007/978-3-662-57265-8" target="_blank" rel="noopener"><em>Proofs from THE BOOKS</em></a> -P314</p>
-<p>考虑图 $G$, 它有 $n$ 个顶点且色素数量为 $\chi(G)$. 如果 $\chi(G)$ 很大，也就是说若我们需要很多种颜色去染色，那么我们是否可以推测出 $G$ 可能包含一个非常大的完全子图呢？事实上，这是不成立的。我们是否能够定义不存在一个较小长度的cycle, 但仍然拥有任意大的色素数量的图呢？这是完全可以做到的，为了方便证明，我们称图 $G$ 中最短cycle的长度为”<strong>围长</strong> (girth)”, 记作 $\gamma(G)$.  则有以下定理：</p>
+<h4 id="2-二元组计数"><a href="#2-二元组计数" class="headerlink" title="2. 二元组计数"></a>2. 二元组计数</h4><p><strong>2.1</strong> Prove that $\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)=\frac{n}{k}\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$</p>
 <blockquote>
-<p><strong>定理</strong>：对于 $k\geq 2$, 存在一个图 $G$ , 它的色素数量 $\chi(G) &gt;k$ 且 围长 $\gamma(G)&gt;k$</p>
-</blockquote>
-<blockquote>
-<p>证明思路：设事件 $A: \chi(G)\leq k$ , 事件 $B: \gamma(G)\leq k$ , 要是能够证明 $P(A)&lt;\frac{1}{2}, P(B)&lt;\frac{1}{2}$, 则有 $P(A \cup B) \leq P(A)+P(B)&lt;\frac{1}{2} + \frac{1}{2} = 1$, 故 $P(\overline{A} \cap \overline{B}) = 1-P(A \cup B) &gt; 0$ ，这样就能够证明 $\chi(G) &gt; k$ 且 $\gamma(G)&gt;k$ 的存在性。（概率方法中一般考虑“坏”事件，要是坏事件发生的概率小于 1， 那么好事件发生的概率一定大于 0）</p>
-<p>所以我们将问题转换为证明 $P(\chi(G)\leq k) \leq \frac{1}{2}$</p>
-<p><strong>证明：</strong> 令 $V = \{v_1,v_2,…,v_n\}$ 为顶点集合，$p$ 为0~1之间的固定概率。 根据概率 $p$ 对两顶点间进行连线，构建<strong>随机图</strong> $G(n,p)$ ，它包含 $V$ 上所有可能的图。 </p>
-<p>根据以上定义，得到一个完全图 $K_n$ 的概率为 $p^{C_n^2}$ （$n$ 个顶点间共可有 $C_n^2$ 条可连边）</p>
+<p><strong>证明</strong>：$k\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)=n\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$</p>
+<p>实际上是对 $(x,A),x\in A, |A|=k, x共有n个可取的值$ 这个二元组在计数，可以通过构造一个 $n \times C_{n}^{k}$ 的 0-1 关联矩阵来理解：</p>
 <ul>
-<li><p>首先我们对色素数量 $\chi(G)$ 进行研究。我们已知 $\chi(G)·\alpha(G) \geq n$, 因此，如果 $\alpha(G)$ 相比于 $n$ 而言很小，那么 $\chi(G)$ 就必然很大。所以我们可以从色素数量转而研究独立数。 </p>
-<p>假设 $2\leq r\leq n$，那么 $V$ 中任一固定的 $r$ 顶点集合为独立集的概率为 $(1-p)^{C_r^2}$ , 我们能得出以下结论：<br>$$<br>P(\alpha \geq r) \leq C_n^r (1-p)^{C_r^2} \leq n^r(1-p)^{C_r^2} = (n(1-p)^{\frac{r-1}{2}})^r \leq (ne^{\frac{-p(r-1)}{2}})^r<br>$$</p>
-<blockquote>
-<ol>
-<li>如何理解 $P(\alpha \geq r) \leq C_n^r (1-p)^{C_r^2}$ ?</li>
-</ol>
-<ul>
-<li><p>$P(\alpha \geq r) = P(A_1 \cup A_2 \cup …\cup A_{C_n^r}) ~ \leq ~\sum P(A_i) = C_n^r (1-p)^{C_r^2}$ </p>
+<li><p>对行计数：共有 $n$ 行，对于每一个顶点 (元素) 有 $\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$ 个 $k$ 元子集合包含它（如何理解这个结论：假设原图只存在 $n-1$ 个顶点（元素），则原图有满足要求的$C_{n-1}^{k-1}$个子集合，当加入新的一个顶点时，只需原来所有的子集合都加入该顶点，则可继续满足条件。），故计数结果为 $n\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$</p>
 </li>
-<li><p>其中 $A_i$ 表示第 $i$ 个 $r$ 元子集合为独立集</p>
+<li><p>对列计数：共有 $C_{n}^k$ 列（$n$ 选 $k$ 个 $k$ 元子集合）， 由$|A|=k$ 可知每列的列和为 $k$,  则列计数结果为$k\left(\begin{array}{l}n \ k \end{array}\right)$</p>
 </li>
 </ul>
-<ol start="2">
-<li>$1-p \leq e^{-p}$</li>
-</ol>
+<p>行、列计数结果相同，则得证。</p>
+<p>注意：每行中的 1 表示有哪些边（$k$ 元子集合）包含该顶点 (元素)，每列表示该边（$k$ 元子集合）包含哪些顶点(元素)，当 $|k|=2$ 时，即可理解为不存在超边的图的关联矩阵情况，如1.2所示。</p>
 </blockquote>
-<p>接下来我们想要证明的就是 $P(\alpha \geq r)$ 接近于 0</p>
-<p>给定任意固定的 $k&gt;0$,  我们现在选择 $p := n ^{-\frac{k}{k+1}}$ , 接下来证明当 $n$ 足够大时，有：<br>$$<br>P(\alpha &gt; \frac{n}{2k})&lt;\frac{1}{2} \tag{1}<br>$$</p>
+<p><strong>2.2</strong> Prove that $\sum_{k=1}^{n} k\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)=n 2^{n-1}$</p>
 <blockquote>
-<p>为什么这里 $r$ 选为 $\frac{n}{2k}$?</p>
+<p><strong>证明：</strong> 同2.1，该公式同样是对$(x,A),x\in A, |A|=k$ 这个二元组在计数，不同的是，由 $\sum_{k=1}^n$ 可知这里没有限制 $k$ 的大小，所以是对 $k=1,…,n$ 所有的取值进行计数</p>
+</blockquote>
+<p><strong>2.3</strong>  Let $0\leq l\leq k \leq n$, show that $\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)\left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)=\left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$</p>
+<blockquote>
+<p>证明： 对二元组 $(A,B),|A|=l,|B|=k, A\subseteq B$ 在计数，可写出 $C_{n}^{l} \times C_{n}^{k}$ 的关联矩阵来理解：</p>
 <ul>
-<li>因为有 $\chi(G)·\alpha(G)\geq n$, 若能证明 $\alpha(G) &lt;\frac{k}{n}$, 则 $\chi(G) &gt; k$; 而后面还要考虑 $\gamma(G)$, 需要删除点，所以这里除以了2</li>
+<li>对行计数：$ \left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$</li>
+<li>对列计数：$\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)\left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)$</li>
 </ul>
 </blockquote>
-<p>因为函数 $n^\frac{1}{k+1}$  的增长速度比 $log(n)$ 快，则当 $n$ 较大时，有 $n^\frac{1}{k+1}\geq 6klog(n)$, 因此 $p\geq 6k\frac{log(n)}{n}$ . 对于 $r := \lceil \frac{n}{2k} \rceil$ 有 $pr \geq 3log(n)$, 因此有：<br>$$<br>n e^{-p(r-1) / 2}=n e^{-\frac{p r}{2}} e^{\frac{p}{2}} \leq n e^{-\frac{3}{2} \log n} e^{\frac{1}{2}}=n^{-\frac{1}{2}} e^{\frac{1}{2}}=\left(\frac{e}{n}\right)^{\frac{1}{2}}<br>$$<br>当 $n \rightarrow \inf$, 上式收敛至 $0$ . </p>
-<p>所以存在 $n_1$, 当 $n\geq n_1$ 时，  下式成立“<br>$$<br>P(\alpha &gt; \frac{n}{2k})&lt; \frac{1}{2}<br>$$</p>
-</li>
-<li><p>现在我们对第二个参数 $\gamma(G)$ 进行分析. 对于给定的 $k$ 值，我们希望证明不存在很多的长度 $\leq k$  的cycle.  设两点间连线的概率为 $p$,  $3 \leq i \leq k$, 则长度为 $i$ 的 cycle 出现的概率为 $p^i$. 将所有长度 $\leq k$ 的 cycle的数量记作 $X$， 而对于 $i$ 个点，它们组成一个 cycle的方式共有 $\frac{(i-1)!}{2}$ 种， 则 $X$ 的数学期望为：<br>$$<br>E(X) = \sum_{i=3}^k \left(\begin{array}{c}<br>n \\<br>i<br>\end{array}\right) \frac{(i-1)!}{2} p^i \leq \frac{1}{2}\sum_{i=3}^{k}n^ip^i\leq\frac{1}{2}(k-2)n^kp^k<br>$$<br>应用Markov不等式（$P(X\geq a)\leq \frac{EX}{a}$）, 可得：<br>$$<br>P(X\geq \frac{n}{2}) \leq \frac{E(X)}{n/2} \leq (k-2)\frac{(np)^k}{n} = (k-2)n^{-\frac{1}{k+1}}<br>$$</p>
-<p>当 $n$ 趋于无穷时，等式右端趋于 0，所以存在 $n_2$ 使得当 $n\geq n_2$ 时，有：</p>
-</li>
-</ul>
-<p>$$<br>    P (X\geq \frac{n}{2}) &lt; \frac{1}{2}<br>$$</p>
-<p>综上，当 $n\geq max(n_1,n_2)$ 时，总存在一个基于这 $n$ 个顶点的图 $H$ 有：$\alpha(H) &lt; \frac{n}{2k}$,  且长度小于 $k$ 的cycle 的数量少于 $\frac{n}{2}$ 个。通过    <strong>删除</strong>这些cycle中的某一个顶点，即<strong>最多删除</strong> $\frac{n}{2}$ 个顶点，我们就能够得到一个<strong>最多含有</strong> $\frac{n}{2}$ 顶点的图 $G$，它总满足<br>$$<br>\gamma(G)&gt;k<br>$$</p>
-<p>​    又因为 $ \alpha(G) \leq \alpha(H) &lt; \frac{n}{2k}$ ，则有：</p>
-<p>$$<br>\chi(G) \geq \frac{n/2}{\alpha(G)} \geq \frac{n}{2\alpha(H)} &gt; \frac{n}{n/k} =k<br>$$</p>
-<p>证毕</p>
-</blockquote>
-<h4 id="9-去随机化-De-randomization"><a href="#9-去随机化-De-randomization" class="headerlink" title="9. 去随机化  De-randomization"></a>9. 去随机化  De-randomization</h4><p>去随机化：将随机概率转化为一个<strong>确定性的算法</strong> （存在性 $\rightarrow$ 确定算法 ）</p>
-<h5 id="9-1-染色问题"><a href="#9-1-染色问题" class="headerlink" title="9.1 染色问题"></a>9.1 染色问题</h5><blockquote>
-<p><strong>定理</strong>：使用两种颜色对完全图 $K_n$ 进行边染色，<strong>最多</strong>只会有 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$ 个同色（monochromatic）的 $K_4$ (4 顶点完全图)</p>
-</blockquote>
+<p><strong>2.4</strong> Prove that: $\sum_{k=0}^{n}C_n^k 2^k C_{n-k}^{[\frac{n-k}{2}]} = C_{2n+1}^{n}$</p>
 <blockquote>
-<p><strong>证明一 （数学期望） </strong>：</p>
-<p>$2^{-5}$ : 六条边染同一种颜色的概率为 $2 ·(\frac{1}{2})^{6} = 2^{-5}$</p>
-<p>$C_n^4:n$ 个顶点中选取 4 个</p>
-<p>综上，同色 $K_4$ 的数量的<strong>数学期望</strong>为 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$</p>
+<p>证明：等式右边易知是从一个 $2n+1$ 元集合中选取 $n$ 个元素，等式左边则必为等价的分布挑选方式</p>
+<p>我们设该 $2n+1$ 元子集合为 $V=\{x_1,x_2,…,x_{2n},x_{2n+1}\}$, 将它划分为 $n$ 个二元集合和剩余的单个元素：</p>
+<p>$\{(x_1,x_2),(x_3,x_4),…,(x_{2n-1},x_{2n}),x_{2n+1}\}$</p>
+<p>对于等式左端，$C_n^k$ 可视为从前 $n$ 个二元集合选取 $k$ 个， 再在每个选取的二元集合中选取一个元素，则可能性为 $2^k$, 此时已经选择了 $k$个元素。接下来还要挑选 $n-k$ 个元素，此时直接对剩余二元集合中进行选择，其中的两个元素均选取，所以只需要选取 $\frac{n-k}{2}$ 个二元子集合。当 $n-k$ 为奇数和偶数时, 需要考虑 $x_{2n+1}$ 是否选取，所以进行取整操作。</p>
 </blockquote>
-<p>那么如何进行染色，使得含有不超过 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$ 个同色 $K_4$ 呢？$\rightarrow$ 去随机化 $\rightarrow$ <strong>条件概率法</strong></p>
+<p><strong>2.5</strong> 某次会议中有30名议员，每两名议员或为政敌，或为朋友。而且，每个议员都恰有6个政敌。对于3个议员组成的委员会，若这三个人中任何两个人都是朋友或任何两个人都是政敌，则称之为奇异委员会。问：共有多少个奇异委员会？</p>
 <blockquote>
-<p><strong>证明二 （去随机化） </strong>：</p>
-<p>我们首先为所有的已经部分染色了的 $K_n$ 赋予不同的权值 $w$ : 给定当前的染色方案，令 $K$ 表示 $K_n$ 中的 $K_4$ </p>
+<p><strong>解：</strong>转换为图的问题进行解决——构建顶点数量为30的完全图，对每条边进行染色，互为政敌染成红色，朋友则染成黑色。则原问题转话为寻找该完全图中，三条边同色的三角形数量。</p>
+<p>我们考虑对以下结构进行计数，即一个顶点的异色的两条边组成的角：</p>
+<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526154348386.png"  style="zoom:50%;" /></p>
+<p>首先设奇异委员会的数量为 $x$ ，则图中三边不同色的三角形的数量为 $C_{30}^3-x$ ，其中异色角的数量为 $(C_{30}^3-x)·2$</p>
+<p>此外，我们还可通过图中的点来进行计数, 每一个点的异色角的数量为：<br>$$<br>C_6^1·C_{23}^{1}<br>$$<br>综上：$2(C_{30}^3-x) = 30·C_6^1 C_{23}^1$ </p>
+</blockquote>
+<p><strong>2.6</strong>  考虑三角形面积公式、多边形内角和公式、梯形面积公式利用双计数进行推导</p>
+<p>证明：</p>
 <ul>
-<li><p>如果已经存在不同色的边，那么令 $w(K)=0$; </p>
-</li>
-<li><p>如果尚没有边被染色，则 $w(K)=2^{-5}$, </p>
-</li>
-<li><p>如果 $K$ 中已经有 $r\geq1$ 条边染了相同的颜色，则令 $w(K)=2^{r-6}$</p>
-</li>
+<li>多边形内角和：<img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526155149526.png" style="zoom:50%;" /></li>
 </ul>
-<p>此外，我们定义 $K_n$ 的所有局部染色方案的权重 $W = \sum w(K)$, 其中 $K$ 包含了 $K_n$ 中所有 $K_4$ 的情况 .</p>
-<p>对 $K_n$ 的 $\left(\begin{array}{c}n \\2\end{array}\right)$ 条边任意排序：$e_1,e_2,…,e_{C_n^2}$,  然后按照边的排序构造我们期望的染色方案。假设 $e_1,e_2, …,e_{i-1}$ 已经根据染色方案 $c$ 进行染色，此时 $K_n$ 的权重为 $W$, 接下来需要对边 $e_i$ 进行染色；令 $W_{黑}$ 表示 $e_i$ 染黑色的话 $K_n$ 的权重， $W_{白}$ 表示染白色的权重，则有：<br>$$<br>W = \frac{W_黑+W_白}{2}<br>$$<br>据此，要确定 $e_i$ 到底染何种颜色，我们只需要比较 $W_黑$ 和 $W_白$ 的大小，从而<strong>选取更小的颜色进行染色</strong></p>
+<p>我们可以根据以上三种划分进行不同的内角和计数方式：</p>
+<p>$(1) = (n-2)<em>180 = (2) = (n</em>180)-360 = (3) = (n-1)*180-180$</p>
+<hr>
+<h4 id="3-三元组计数"><a href="#3-三元组计数" class="headerlink" title="3. 三元组计数"></a>3. 三元组计数</h4><ul>
+<li>在超图中，有 $\sum_{x \in X} d^{2}(x)=\sum_{A \in F}\sum_{x \in A} d(x)=\sum_{A \in F}\sum_{B\in F} |A \cap B |$</li>
+</ul>
+<blockquote>
+<p>证明：和第一节中的握手定理相比较不难发现，该等式是在对一个三元组 $(x,A,B), A,B\in F, x\in A,x\in B$ 进行计数，其中$A,B$均为超边集合，且此处$A,B$ 可以是相等的。证明三计数原理的关键在于结合<strong>乘法原理和加法原理</strong></p>
 <ul>
-<li>若 $W_黑$ 比较小，则有：$W = \frac{W_黑+W_白}{2} \geq W_黑 $ ，这意味着 $W$ 在染色的过程中不断变小/不会增长，我们想要求的是一个尽可能少的同色 $K_4$, 则选取更小的值进行染色</li>
-<li>如果我们想要得到的越多越好的同色 $K_4$, 则应该选取权值更大的颜色进行染色</li>
+<li>$\sum_{x \in X} d^{2}(x)$ : 固定一个顶点 $x$ ，有 $d^2(x)$ 个超边包含 $x$ . 包含 $x$ 的超边数为 $d(x)$, 则 $A,B$ 必须要在这 $d(x)$ 条超边中选择， 则 $A,B$ 选择的可能性为 $d^2(x)$。而 $x$ 是可变的，则有 $\sum_{x\in X}$</li>
+<li><p>$\sum_{A \in F}\sum_{x \in A} d(x)$ : 固定一个 $A$, 列出 $A$ 中所有 $x,x\in A$, 则对于 $B$ 而言，此时选择的可能有 $\sum_{x\in A}d(x)$; 而$A$ 可变的，则有 $\sum_{A \in F}$</p>
+</li>
+<li><p>$\sum_{A \in F}\sum_{B\in F} |A \cap B |$: 选定了 $A,B$, 则 $x$ 要同时在 $A,B$ 上，$x$ 的选法有 $|A \cap B|$ , 而 $A,B$ 都是可变的，则有 $\sum_{A \in F}\sum_{B\in F}$</p>
+</li>
 </ul>
-<p>在染色开始之前，同色的 $K_4$ 的数量的期望为 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$, 而根据这种策略进行染色，后续的数量只会不断小于这个数字。染色结束后， $K_n$ 的权重即为同色 $K_4$ 的数量。 </p>
 </blockquote>
-<h5 id="9-2-Tenure-Game"><a href="#9-2-Tenure-Game" class="headerlink" title="9.2 Tenure Game"></a>9.2 Tenure Game</h5><p>Tenure Game 是一种有趣的博弈游戏：在一家公司有 $Paul $和 $Carole $两名员工，每年 $Paul$ 会提供给 $Carole$ 一份待升职的员工名单 $L$，而 $Carole$ 拿到名单后有两种选择：</p>
-<p>(1) 对名单上所有员工提升一级，但不在名单上的员工全解雇</p>
-<p>(2) 名单上员工全解雇，不在名单上的员工升一级 </p>
-<p>（该公司职位由高到低分为很多等级）</p>
-<p>$Paul$ 赢得游戏的条件是有人得到了最高的职位，而没人得到最高职位时则 $Carole$ 赢.</p>
-<p><strong>问题</strong>：假设当前距离最高职位只差 $i$ 级提升的员工人数为 $a_i$, $1\leq i\leq k$, 问无论 $Paul$ 如何提供名单 $L$， $Carole$ 怎么样才能一直赢下去？</p>
-<p>例子，若 $a_1=2$, 则 $Paul$ 只需要在名单上包含其中任意一人， $Carole$ 都会输</p>
+<ul>
+<li><p><strong>例题1</strong>：已知集合 $M=\{x_1,x_2,…,x_{4n+3}\}$ 它的 $4n+3$ 个子集合 $A_1,A_2,A_{4n+3}$ 具有以下性质：</p>
+<p>(1) $M$ 中每 $n+1$ 个元素恰属于唯一一个子集 $A_j$</p>
+<p>(2) $|A_i| \geq 2n+1(i=1,2,…,4n+3)$</p>
+<p>证明：任意两个子集 $A_i$ 与 $A_j (i&lt;j)$ 恰有 $n$ 个公共元</p>
+<p>思路：需要证明的是 $|A_i \cap A_j|=n$, 很容易联想到三计数中的集合 $|A\cap B|$。因此我们使用三计数来证明。</p>
 <blockquote>
-<p><strong>结论</strong>：当 $\sum a_k2^{-k}&lt;1$ 时，$Carole$ 一定会赢 </p>
+<p>首先构建 $(4n+3) \times (4n+3)$ 的关联矩阵，行为 $x$, 列为 $A$</p>
+<p>对该矩阵求和：$\sum_{x\in M} = \sum_{i=1}^{4n=3}|A_i|\geq(4n+3)(2n+1)$</p>
+<p>对以下三元组进行计数：$(x,A_i,A_j),1\leq i\leq j\leq 4n+3, x\in A_i,x\in A_j$</p>
+<ul>
+<li><p>固定 $x$: 则 $A_i,A_j$ 要在包含 $x$ 的超边中选择，且$A_i \neq A_j$,则计数结果为 $|S| = \sum_{x\in M}\left(\begin{array}{c}<br>d(x) \\<br>2<br>\end{array}\right)$</p>
+</li>
+<li><p>选定 $A_i,A_j$, 由于 $M$ 中每 $n+1$ 个元素恰属于唯一一个子集 $A_j$, 则 $A_i \cap A _j \leq n$, 则 $|S| \leq \left(\begin{array}{c}<br>4n+3 \\<br>2<br>\end{array}\right)·n$</p>
+</li>
+</ul>
+<p>根据柯西不等式（和证明H-free时候类似），可推出</p>
+<p><img src="C:\Users\Huabin\AppData\Roaming\Typora\typora-user-images\image-20200706161027321.png"  style="zoom:60%;" /></p>
+<p>综上，$|S| = \left(\begin{array}{c}<br>4n+3 \\<br>2<br>\end{array}\right)·n$</p>
+<p>所以 $|A_i \cap A_j|=n$</p>
 </blockquote>
+</li>
+</ul>
+<ul>
+<li><strong>例题2</strong>. 设 $n$ 和 $k$ 是正整数，$S$ 是平面内 $n$ 个点的集合，满足：</li>
+</ul>
+<p>​    (1)$S$ 中任何三点不共线</p>
+<p>​    (2)对 $S$ 中每一点 $p$， $S$ 中至少有 $k$ 个点与 $p$ 的距离相等</p>
+<p>​    证明：$k&lt; \frac{1}{2} + \sqrt{2n}$</p>
 <blockquote>
-<p><strong>证明一（数学期望）：</strong>假设 $Carole$ 做出两种选择的概率均为$1/2$ ，则易知 $\sum a_k2^{-k}$ 为得到最高职位的人数 $T$ 的数学期望（令每个职员升降职的指示变量为 $I_f$, 则 $T=\sum I_f, ~E(T)=\sum E[I_f]=\sum a_k2^{-k}$,  ），当 $E(T)&lt;1$ 时，$Carole$ 都会赢</p>
-<p><strong>证明二（去随机化）</strong>：设 $Carole$ 随机地进行游戏，最终最高职位的人数的期望为 $E(T)$， 将该期望视作权重。现在 $Paul$ 提供给 $Carole$ 了一份名单，令 $T_1$ 为 $Carole$ 当前选择 (1) 后续随机游戏的情况下，最终获得最高职位的人数，$T_2$ 为选择 $(2)$ 的人数。</p>
-<p>因为： $E(T) = \frac{E(T_1)+E(T_2)}{2}$</p>
-<p>则 $Carole$ 能够赢下游戏的关键就是选择期望更小的选项：选择 (1) 如果有 $E(T_1)\leq E(T_2)$, 否则选择 (2)</p>
-<p>这样选择能够保证 $E(T)$ 不断减小，游戏起始时有 $E(T)\leq 1$, 则最终游戏结束时也必有 $E(T)&lt; 1$</p>
+<p>证明：设 $S = \{p_1,p_2,…,p_n\}$,  $\{C_1,C_2,…,C_n\}$ 是以 $p_1,p_2,…,p_n$ 为圆心的圆， 对于圆 $C_i$, 圆上的点个数为 $x_i$, 由条件(2)知 $x_i \geq k$. 又由于每个点可能不仅在一个圆上，再设对于点 $p_i$, 它处于 $y_i$ 个圆上。</p>
+<p>则对所有圆上点的个数进行计数，得：<br>$$<br>x_1+x_2+···+x_n = y_1 + y_2 + ··· + y_n \geq n ·k<br>$$</p>
+<p>对以下三元组进行计数：<br>$$<br>(p_k,C_i,C_j),i&lt;j,p_k\in C_i,p_k \in C_j<br>$$</p>
+<ul>
+<li>选定 $C_i,C_j$ ，它们最多只能有两个交点，则 $|S|\leq 2 ·C_n^2$</li>
+<li>选定 $p_k$, 则 $|S| = \sum_{k=1}^n\left(\begin{array}{c}<br>y_k \\<br>2<br>\end{array}\right)$</li>
+</ul>
+<p>由 $\sum_{k=1}^n\left(\begin{array}{c}<br>y_k \\<br>2<br>\end{array}\right) \leq 2 ·C_n^2$, 利用柯西施瓦茨不等式可推出结果。</p>
 </blockquote>
+<hr>
+<h4 id="4-Turan-number"><a href="#4-Turan-number" class="headerlink" title="4. Turan number"></a>4. Turan number</h4><ul>
+<li><p>Turan number $T(n,k,l), l\leq k \leq n$: 对于一个 $n$ 元集合 $X$ ，从$X$ 中选择 $k$ 元子集和，要求<strong>任一 $k$ 元子集合至少包含一个 $l$ 元子集合</strong>，则需要的最少的 $l$ 元子集合的个数称作 Turan number.</p>
+</li>
+<li><p>Prove that: $T(n, k, l) \geq\left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)/ \left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)$</p>
+<blockquote>
+<p>证明：假设选取的满足要求的 $l$ 元子集合为 $F = {A_1,…,A_{|F|}}$，则可构造 $|F|\times C_{n}^{k}$ 的关联矩阵：</p>
+<ul>
+<li><p>按行来计数，对于一个固定的 $l$ 元子集合，有 $\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$ 个 $k$ 元子集合包含它，则行计数结果为 $|F|\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$</p>
+</li>
+<li><p>按列来计数，由Turan number的要求知，矩阵总每列都至少包含一个值为 $1$ 的元素，则列计数的下界为$\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)$</p>
+</li>
+</ul>
+<p>得到：$|F|\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right) \geq \left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)$， 化简得到 $T(n, k, l) \geq\left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)/ \left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)$</p>
+</blockquote>
+</li>
+</ul>
+<p>启发：<em>当需要利用双计数思想证明一个不等式时，可以通过寻找行、列计数的某个上下界来证明</em></p>
+<hr>
+<h4 id="5-H-free问题"><a href="#5-H-free问题" class="headerlink" title="5. H-free问题"></a>5. H-free问题</h4><ul>
+<li>问题定义：令 $H$ 为一个固定的图，如果一个图 $G$ 是 $H-free$ 的，即 $G$ 中不含一个子图 $H$, 那么在这情况下一个有着 $n$ 个的顶点的图 $G$ 最多能有多少条边呢？ （可以设想如果图 $G$ 中所有点之间都有边相连，那么必不可能为 $H-free$）</li>
+<li>定理：如果图 $G(V,E)，|V|=n$ 中不存在 $4-cycles$，那么必有:</li>
+</ul>
+<p>$$<br>|E|\leq \frac{n}{4}\lfloor 1 + \sqrt{4n-3} \rfloor<br>$$</p>
+<blockquote>
+<p><strong>证明：</strong></p>
+<p>先给出一个实例来验证，对于右图，顶点数为5，则由定理知最多有6条边，正确。<img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526155042159.png" style="zoom:25%;" /></p>
+<p>设有点集合为 $V=\{1,2,…,n\}$, 对以下集合进行计数：<br>$$<br>S = \{(u,\{v,w\})|v \neq w,u与v,w都邻接\}<br>$$<br>即在图中计数<img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526152949256.png" style="zoom:35%;" /> 该种结构。</p>
+<ul>
+<li><p>固定 $u$，则 $v,w$ 必须在 $v$ 的 neighbor 中选，有 $\left(\begin{array}{c}<br>d(u) \\<br> 2<br>\end{array}\right)$ 种选法—— Fix $u$, $|S| = \sum_{u\in V}\left(\begin{array}{c}<br>d(u) \\<br>2<br>\end{array}\right)$</p>
+</li>
+<li><p>固定 $v,w$， 最多只能有一个 $u$ 和它们相连（如果两个的话就构成了一个4-cycle），而 $v,w$ 是可变的—— Fix $v,w$，$|S|\leq \left(\begin{array}{l}<br>n \\<br>2<br>\end{array}\right) · 1$</p>
+</li>
+</ul>
+<p>由以上，可得到 $\sum_{u\in V}\left(\begin{array}{c}<br>d(u) \\<br>2<br>\end{array}\right) \leq \left(\begin{array}{l}<br>n \\<br>2<br>\end{array}\right)$</p>
+<p>化简得 $\sum_{u\in V}d^2(u)\leq \sum_{u\in V} d(u) + n(n-1)$</p>
+<p>利用<em><a href="[https://baike.baidu.com/item/%E6%9F%AF%E8%A5%BF%E4%B8%8D%E7%AD%89%E5%BC%8F](https://baike.baidu.com/item/柯西不等式">柯西不等式</a>)</em>，可进一步化简证明。</p>
+</blockquote>
+<p>疑问：<em>为何证明4-cycle free时需要对这种特殊的结构进行计数呢？</em></p>
+<hr>
+<h4 id="6-广义双计数"><a href="#6-广义双计数" class="headerlink" title="6. 广义双计数"></a>6. 广义双计数</h4><ul>
+<li><p>关联：假设给定两个有限集（finite sets）$R$ 和 $C$ , 一个子集 $S \subseteq R\times C$，$\times$ 为叉积/笛卡尔积。如果 $(p,q)\in S$，我们称 $p$ 和 $q$ 是<strong>关联</strong>（incident）的。</p>
+</li>
+<li><p>$r_p$ ：与 $p$ 关联的元素个数； $c_p$: 与 $q$ 关联的元素个数</p>
+</li>
+<li>我们有以下广义双计数定理：</li>
+</ul>
+<p>$$<br>\sum_{p\in R}r_p= |S| = \sum_{q\in C}c_q<br>$$</p>
+<p>我们可以构建 $p$ 和 $q$ 的关联矩阵（incident matrix）： $A = (a_{pq})$，则上式左右两端分别为行、列计数方式。关联矩阵的行和列均用 $R$ 和 $C$ 的元素进行索引，有：<br>$$<br>a_{pq} = 1,if(p.q)\in S,else \space 0<br>$$</p>
+<blockquote>
+<ul>
+<li>例子：令 $R=C=\{1,2,…,n\}$，集合 $S=\{(i,j): i整除j\}$， $t(j)$ 为 $j$ 的因子（divisor）个数，我们对该关联矩阵计数，即在计数 $\sum t_j$</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526155652035.png" style="zoom:33%;" /></p>
+<p>$t(j)$ 的取值是<strong>跳跃性较大</strong>的，且具有以下规律：$t(2^k) = k+1,t(素数) =2$</p>
+<p>我们试图求 $t(j)$ 的平均值，即：$\overline{t(j)} = \frac{1}{n}\sum_{j=1}^{n}t(j)$ 的值：</p>
+<ul>
+<li><p>按列求和：$\frac{1}{n}\sum_{j=1}^{n}t(j)$， 即对因子个数进行计数</p>
+</li>
+<li><p>按行求和：对倍数的个数进行计数，如2的小于等于8的倍数有：2，4，6，8；<br>$$<br>\frac{1}{n}\sum_{i=1}^{n}\lfloor \frac{n}{i} \rfloor \leq \frac{1}{n}\sum_{i=1}^{n}\frac{n}{i} = \sum_{i=1}^n \frac{1}{i} \approx ln(n)<br>$$<br>这是一个<a href="https://zh.wikipedia.org/wiki/%E8%B0%83%E5%92%8C%E7%BA%A7%E6%95%B0" target="_blank" rel="noopener">调和级数</a>，可以用部分和 $ln(n)$ 来近似</p>
+<ul>
+<li>误差分析：第一个不等式带来的误差至多为1, 而部分和近似带来的误差也小于1 （可通过画函数图和积分面积来理解：$ln(n) &lt; \sum_{i=1}^{n} \frac{1}{i}&lt; ln(n) + 1$），所以整体的计数误差 $&lt;2$</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="7-Zarankiewicz问题"><a href="#7-Zarankiewicz问题" class="headerlink" title="7. Zarankiewicz问题"></a>7. Zarankiewicz问题</h4><p>问题描述：给定 $n\times n$ 的 0-1 矩阵，若不能出现 $a\times b$ 的全 $1$ 子矩阵 （a,b为任意值），则该矩阵最多能有多少个为 1 的元素？</p>
+<p>问题关键：如何判定图中是否存在这样的局部全 $1$ 子矩阵？</p>
+<ul>
+<li><p>使用<strong>二分图</strong>来对问题进行转换并建模：构建二分图 $G=(V_1,V_2,E)$, 其中$V_1,V_2$ 为大小为 $n$ 的独立集，$E\in V_1\times V_2$ 为边集合。</p>
+<ul>
+<li><p>矩阵元素 $\leftrightarrow$ 二分图中的边</p>
+</li>
+<li><p>令 $K_a(n)$ 表示——二分图中超过 $K_a(n)$ 条边时，至少会包含一个 $a\times a$ 的 clique，我们要求的就是 $K_a(n)$ 的上界，即为原问题中为1的元素的数量的上界</p>
+</li>
+<li>结论： $K_{a}(n) \leq(a-1)^{1 / a} n^{2-1 / a}+(a-1) n$</li>
+</ul>
+</li>
+</ul>
+<p>研究：当边数小于某个数时，一定不包含 $a\times a$ 的 clique （recall: H-free问题 $\leftrightarrow$ <strong>$a\times a$ clique-free</strong>）</p>
+<p>定义待计数集合： $S=\{(x,A),x\in V1,A\subseteq V_2,|A|=a\}$, $x$ 是 $V_1$ 中的可变节点，$A$ 是 $V_2$ 中的 $n$ 元子集合，其中 $x$ 和 $A$ 中的点都有边相连，所以我们是对以下结构进行计数：</p>
+<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200518194743783.png" style="zoom:33%;" /></p>
+<ul>
+<li>首先固定 $x$，则 $A$ 元集合必须在 $x$ 的邻接节点中选择：</li>
+</ul>
+<p>$$<br>|S|=\sum_{x\in V_1} \left(\begin{array}{c}<br>d(x) \\<br>a<br>\end{array}\right)<br>$$</p>
+<ul>
+<li>固定 $A$,  最多可有$(a-1)$ 个 $x$ 和 $A$ 中所有点都有边相连(如果出现 $a$ 个的话即构成 $a\times a$ clique), 而 $A$ 是可变的，即有 $\left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right)$ 种可能性</li>
+</ul>
+<p>$$<br>|S| \leq \left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right) (a-1)<br>$$</p>
+<p>由上，得到<br>$$<br>\frac{1}{n}\sum_{x\in V_1} \left(\begin{array}{c}<br>d(x) \\<br>a<br>\end{array}\right) \leq \left(\begin{array}{c}<br>n \\<br>a<br>\end{array}\right) (a-1)<br>$$<br>对以上不等式进行推导：</p>
+<p>函数 $f(x) = \left(\begin{array}{l}<br>x \\<br>a<br>\end{array}\right)=\frac{x(x-1)··(x-(a-1))}{a!} $ 当 $x\geq a-1$ 时是凸函数，可以使用Jensen不等式（<a href="https://baike.baidu.com/item/%E7%90%B4%E7%94%9F%E4%B8%8D%E7%AD%89%E5%BC%8F" target="_blank" rel="noopener">Jensen不等式</a>：$\sum_{i=1}^s\lambda_if(x_i)\geq f(\sum_{i=1}^s \lambda_ix_i)$）：<br>$$<br>\frac{1}{n}\sum_{x\in V_1} \left(\begin{array}{c}<br>d(x) \\<br>a<br>\end{array}\right) \geq \left(\begin{array}{c}<br>\frac{1}{n}\sum_{x\in V_1}d(x) \\<br>a<br>\end{array}\right)<br>$$<br>由 $\sum_{x\in V_1}d(x) = |E|$， 可得：<br>$$<br>n\left(\begin{array}{c}<br>\frac{|E|}{n} \\<br>a<br>\end{array}\right) = \frac{n(\frac{|E|}{n})(\frac{|E|}{n}-1)··(\frac{|E|}{n}- (a-1))}{a!} \leq \left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right) (a-1) \leq \frac{n(n-1)··(n-(a-1))}{a!} (a-1) &lt; \frac{n^a}{a!}(a-1)<br>$$<br>化简得，<br>$$<br>n(\frac{|E|}{n}-(a-1))^{a} &lt; \frac{n^a}{a!}(a-1)<br>$$<br>解得：<br>$$<br>|E| \leq(a-1)^{1 / a} n^{2-1 / a}+(a-1) n<br>$$<br>证毕。</p>
+<p>注：该问题也可以使用<strong>概率方法</strong>进行求解</p>
+<hr>
+<h4 id="8-Sperner’s-Lemma-（斯波纳引理）"><a href="#8-Sperner’s-Lemma-（斯波纳引理）" class="headerlink" title="8. Sperner’s Lemma （斯波纳引理）"></a>8. Sperner’s Lemma （斯波纳引理）</h4><ul>
+<li>引理描述：</li>
+<li><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200519154341291.png" style="zoom:40%;" /></li>
+</ul>
+<p>如图所示，一个大三角形被内部任意的顶点分成多个小三角形，用三种颜色对每个顶点进行，染色遵循以下规则：大三角形的三个顶点的颜色不能相同，边上顶点的颜色必须与该边上的两个大三角形的顶点颜色相同，而大三角形内部的顶点染色是无限制的。</p>
+<p>则<strong>必存在一种小三角形的三个顶点颜色不同，且这种小三角形的个数为奇数</strong></p>
+<ul>
+<li>证明思路： 根据握手定理的推论，即图中<strong>度数为奇数的点必为偶数个</strong></li>
+</ul>
+<p>为了使用这个推论，我们建立原图的<a href="https://en.wikipedia.org/wiki/Dual_graph" target="_blank" rel="noopener">对偶图</a>，即将各小三角形(a,b,c,d,e,f,g,h)的中心视作新的顶点，将新顶点相连；不同的是，我们只对一些满足特点条件的顶点进行连接：<strong>若两个新顶点之间的连线经过边 $E_{12}$, 即边两端颜色为1和2，则将该两新顶点之间连线</strong> （如图中三角形a和b的中心作为新顶点相连。</p>
+<p>由以上规则，则会出现以下几种不同度数的小三角形：</p>
+<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200525191009398.png" style="zoom:50%;" /></p>
+<p>下图即为从原图导出的满足以上条件的对偶图：</p>
+<p>​    <img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200525191752043.png" style="zoom:20%;margin-left:30%" /></p>
+<p>其中 $i$ 表示三角形外的区域，它被单独视作一个顶点；对于节点 $i$, 它的度数必为奇数（可以将大三角形1,2这条边上的相邻的同色顶点合并，则易知必出现奇数个1,2颜色的连线）；而由握手定理可知，图中度数为奇数的节点个数必为偶数，则大三角形中必存在奇数个度数为奇数的小三角形，即度数为1的 小三角形，也即三个顶点颜色不同的小三角形。</p>
+<p>此外附上维基百科中关于斯波纳引理的介绍和证明，写的非常详细：<a href="https://en.wikipedia.org/wiki/Sperner&#39;s_lemma" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Sperner%27s_lemma</a></p>
 
             </div>
             <hr/>
@@ -640,7 +674,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://hb-liu.github.io/probility/">http://hb-liu.github.io/probility/</a>
+                    <a href="http://hb-liu.github.io/double-count/">http://hb-liu.github.io/double-count/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -682,8 +716,8 @@
                                     <span class="chip bg-color">图论</span>
                                 </a>
                             
-                                <a href="/tags/%E6%A6%82%E7%8E%87%E6%96%B9%E6%B3%95/">
-                                    <span class="chip bg-color">概率方法</span>
+                                <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/">
+                                    <span class="chip bg-color">组合数学</span>
                                 </a>
                             
                         </div>
@@ -848,9 +882,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/double-count/">
                     <div class="card-image">
@@ -871,9 +906,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-06
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -886,6 +921,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -908,33 +944,53 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/learn-to-pay-attention/">
+                <a href="/probility/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="论文笔记-Learn to pay attention">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="图论——概率方法">
                         
-                        <span class="card-title">论文笔记-Learn to pay attention</span>
+                        <span class="card-title">图论——概率方法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            注：部分转载于https://www.jianshu.com/p/d5c968e0e194（博主：月牙眼的楼下小黑）
-发表于：ICLR 2018 (Poster)代码地址：https://github.com/SaoYan/LearnToP
+                            图论笔记——概率方法1. 基本概念证明存在性，有两种思路：
+
+构造性：直接构造出需要证明存在的目标
+非构造性：往往很难直接构造，所以采用非构造性方法，比如归纳等；概率方法就属于非构造性方法
+
+概率方法 (probabilistic meth
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-01-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-05
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Huabin
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%9B%BE%E8%AE%BA/" class="post-category">
+                                    图论
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%9B%BE%E8%AE%BA/">
+                        <span class="chip bg-color">图论</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%A6%82%E7%8E%87%E6%96%B9%E6%B3%95/">
+                        <span class="chip bg-color">概率方法</span>
+                    </a>
+                    
                 </div>
                 
             </div>
