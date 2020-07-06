@@ -573,14 +573,14 @@
 <p><strong>定理</strong>：使用两种颜色对完全图 $K_n$ 进行边染色，<strong>最多</strong>只会有 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$ 个同色（monochromatic）的 $K_4$ (4 顶点完全图)</p>
 </blockquote>
 <blockquote>
-<p><strong>证明一 (数学期望) </strong>：</p>
+<p><strong>证明一 （数学期望） </strong>：</p>
 <p>$2^{-5}$ : 六条边染同一种颜色的概率为 $2 ·(\frac{1}{2})^{6} = 2^{-5}$</p>
 <p>$C_n^4:n$ 个顶点中选取 4 个</p>
 <p>综上，同色 $K_4$ 的数量的<strong>数学期望</strong>为 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$</p>
 </blockquote>
 <p>那么如何进行染色，使得含有不超过 $\left(\begin{array}{c}n \\4\end{array}\right) 2 ^{-5}$ 个同色 $K_4$ 呢？$\rightarrow$ 去随机化 $\rightarrow$ <strong>条件概率法</strong></p>
 <blockquote>
-<p><strong>证明二 (去随机化) </strong>：</p>
+<p><strong>证明二 （去随机化） </strong>：</p>
 <p>我们首先为所有的已经部分染色了的 $K_n$ 赋予不同的权值 $w$ : 给定当前的染色方案，令 $K$ 表示 $K_n$ 中的 $K_4$ </p>
 <ul>
 <li><p>如果已经存在不同色的边，那么令 $w(K)=0$; </p>
@@ -1181,8 +1181,8 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     $(document).ready(function () {
 
         var int = setInterval(fixCount, 50);  // 50ms周期检测函数
-        var pvcountOffset = 80000;  // 初始化首次数据
-        var uvcountOffset = 20000;
+        var pvcountOffset = 100;  // 初始化首次数据
+        var uvcountOffset = 100;
 
         function fixCount() {
             if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
