@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="图论——双计数, 深度不学习">
+    <meta name="keywords" content="论文解读——Associative Embedding, 深度不学习">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>图论——双计数 | 深度不学习</title>
+    <title>论文解读——Associative Embedding | 深度不学习</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -242,12 +242,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">图论——双计数</h1>
+                    <h1 class="description center-align post-title">论文解读——Associative Embedding</h1>
                 </div>
             </div>
         </div>
@@ -364,12 +364,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%9B%BE%E8%AE%BA/">
-                                <span class="chip bg-color">图论</span>
-                            </a>
-                        
-                            <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/">
-                                <span class="chip bg-color">组合数学</span>
+                            <a href="/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1%EF%BC%8Cbottom-up/">
+                                <span class="chip bg-color">姿态估计，bottom-up</span>
                             </a>
                         
                     </div>
@@ -380,8 +376,12 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%9B%BE%E8%AE%BA/" class="post-category">
-                                图论
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-category">
+                                论文笔记
+                            </a>
+                        
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" class="post-category">
+                                姿态估计
                             </a>
                         
                     </div>
@@ -393,7 +393,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-06
+                    2020-07-08
                 </div>
                 
 
@@ -402,14 +402,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.8k
+                    736
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    20 分
+                    3 分
                 </div>
                 
 
@@ -424,231 +424,100 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="图论笔记——双计数"><a href="#图论笔记——双计数" class="headerlink" title="图论笔记——双计数"></a>图论笔记——双计数</h3><h4 id="1-握手定理"><a href="#1-握手定理" class="headerlink" title="1. 握手定理"></a>1. 握手定理</h4><h5 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h5><ul>
-<li>握手定理： 对于图 $G= (V,E)$ ， 有 $\sum_{v\in V}d(v) = 2|E|$</li>
-</ul>
-<p>握手定理说明所有顶点的度数为两倍的边数（顶点之间握手相当于顶点间连一条边，一条边使得两个顶点都被握手）</p>
+                <h1 id="论文解读—Associative-Embedding"><a href="#论文解读—Associative-Embedding" class="headerlink" title="论文解读—Associative Embedding"></a>论文解读—Associative Embedding</h1><h2 id="1-论文解读"><a href="#1-论文解读" class="headerlink" title="1. 论文解读"></a>1. 论文解读</h2><p>这个方法属于多人姿态估计的Bottom-up的方法，意味着它分为两步：</p>
 <ul>
-<li>推论： 图中奇度数点个数必为偶数</li>
+<li>定位关键点</li>
+<li>对关键点进行 group</li>
 </ul>
-<h5 id="1-2-从关联矩阵看握手定理"><a href="#1-2-从关联矩阵看握手定理" class="headerlink" title="1.2 从关联矩阵看握手定理"></a>1.2 从关联矩阵看握手定理</h5><p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526161218866.png"  style="zoom:35%;" /></p>
-<p>上图为图和它对应的 $5\times 6$ 关联矩阵。我们对于该关联矩阵来计数，每一行的和为<strong>该顶点的度数</strong> ，即为 $\sum_{v\in V} d(v)$ ;  每一列的和为<strong>边数×2</strong>，按行求和与按列求和结果一致，即推出握手定理。</p>
-<p><strong>从矩阵角度而言，双计数在于对关联矩阵中1的数目进行计数，可以按行计数，也可以按列计数。</strong></p>
-<h5 id="1-3-从集合角度看握手定理"><a href="#1-3-从集合角度看握手定理" class="headerlink" title="1.3 从集合角度看握手定理"></a>1.3 从集合角度看握手定理</h5><p>对于集合 $V=\{1,2,3,4,5\}, B=\{\{1,2\},\{2,3,4\},\{2,4,5\}\}$, $V$ 为视为<strong>点集合</strong>，$B$ 为视为<strong>超边集合</strong>，可以构造矩阵：</p>
-<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526161736325.png"  style="zoom:30%;" /></p>
-<p>矩阵中的每一行仍为每个点的度，每一列表示该边上的点（注意这里是存在超边的：超过两个点），对B进行计数握手定理仍然成立，等式右端表示对B中所有集合元素个数进行计数（若B不为超边，则每个子集合元素个数均为2，则为$2|E|$）：<br>$$<br>\sum_{v\in V}d(v) = \sum_{b \in B} |B|<br>$$<br>Note: 所以握手定理对于超边成立</p>
-<hr>
-<h4 id="2-二元组计数"><a href="#2-二元组计数" class="headerlink" title="2. 二元组计数"></a>2. 二元组计数</h4><p><strong>2.1</strong> Prove that $\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)=\frac{n}{k}\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$</p>
-<blockquote>
-<p><strong>证明</strong>：$k\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)=n\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$</p>
-<p>实际上是对 $(x,A),x\in A, |A|=k, x共有n个可取的值$ 这个二元组在计数，可以通过构造一个 $n \times C_{n}^{k}$ 的 0-1 关联矩阵来理解：</p>
+<h3 id="关键点定位"><a href="#关键点定位" class="headerlink" title="关键点定位"></a>关键点定位</h3><p>它遵循了较为通用的生成 Heatmap 的方式去预测关键点的位置，在损失函数方面也使用了常见的 L2 距离来度量。</p>
+<h3 id="Grouping"><a href="#Grouping" class="headerlink" title="Grouping"></a>Grouping</h3><p>这是这个工作的关键，它可以看作使用了 <strong>实例分割</strong> 的思想来对关键点进行分类。但是，和实例分割最大的不同在于，它没使用额外的像素级的监督信息来训练模型，它采用的是一种可以看作弱监督分割的思想，即：</p>
 <ul>
-<li><p>对行计数：共有 $n$ 行，对于每一个顶点 (元素) 有 $\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$ 个 $k$ 元子集合包含它（如何理解这个结论：假设原图只存在 $n-1$ 个顶点（元素），则原图有满足要求的$C_{n-1}^{k-1}$个子集合，当加入新的一个顶点时，只需原来所有的子集合都加入该顶点，则可继续满足条件。），故计数结果为 $n\left(\begin{array}{l}<br>n-1 \\<br>k-1<br>\end{array}\right)$</p>
-</li>
-<li><p>对列计数：共有 $C_{n}^k$ 列（$n$ 选 $k$ 个 $k$ 元子集合）， 由$|A|=k$ 可知每列的列和为 $k$,  则列计数结果为$k\left(\begin{array}{l}n \ k \end{array}\right)$</p>
-</li>
+<li>隶属于同一个 Instance 的像素点预测值处于同一值域 （pull）</li>
+<li>不同的 Instance 的像素点上的预测值存在一定差异 （push）</li>
 </ul>
-<p>行、列计数结果相同，则得证。</p>
-<p>注意：每行中的 1 表示有哪些边（$k$ 元子集合）包含该顶点 (元素)，每列表示该边（$k$ 元子集合）包含哪些顶点(元素)，当 $|k|=2$ 时，即可理解为不存在超边的图的关联矩阵情况，如1.2所示。</p>
-</blockquote>
-<p><strong>2.2</strong> Prove that $\sum_{k=1}^{n} k\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)=n 2^{n-1}$</p>
-<blockquote>
-<p><strong>证明：</strong> 同2.1，该公式同样是对$(x,A),x\in A, |A|=k$ 这个二元组在计数，不同的是，由 $\sum_{k=1}^n$ 可知这里没有限制 $k$ 的大小，所以是对 $k=1,…,n$ 所有的取值进行计数</p>
-</blockquote>
-<p><strong>2.3</strong>  Let $0\leq l\leq k \leq n$, show that $\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)\left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)=\left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$</p>
-<blockquote>
-<p>证明： 对二元组 $(A,B),|A|=l,|B|=k, A\subseteq B$ 在计数，可写出 $C_{n}^{l} \times C_{n}^{k}$ 的关联矩阵来理解：</p>
-<ul>
-<li>对行计数：$ \left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$</li>
-<li>对列计数：$\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)\left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)$</li>
-</ul>
-</blockquote>
-<p><strong>2.4</strong> Prove that: $\sum_{k=0}^{n}C_n^k 2^k C_{n-k}^{[\frac{n-k}{2}]} = C_{2n+1}^{n}$</p>
-<blockquote>
-<p>证明：等式右边易知是从一个 $2n+1$ 元集合中选取 $n$ 个元素，等式左边则必为等价的分布挑选方式</p>
-<p>我们设该 $2n+1$ 元子集合为 $V=\{x_1,x_2,…,x_{2n},x_{2n+1}\}$, 将它划分为 $n$ 个二元集合和剩余的单个元素：</p>
-<p>$\{(x_1,x_2),(x_3,x_4),…,(x_{2n-1},x_{2n}),x_{2n+1}\}$</p>
-<p>对于等式左端，$C_n^k$ 可视为从前 $n$ 个二元集合选取 $k$ 个， 再在每个选取的二元集合中选取一个元素，则可能性为 $2^k$, 此时已经选择了 $k$个元素。接下来还要挑选 $n-k$ 个元素，此时直接对剩余二元集合中进行选择，其中的两个元素均选取，所以只需要选取 $\frac{n-k}{2}$ 个二元子集合。当 $n-k$ 为奇数和偶数时, 需要考虑 $x_{2n+1}$ 是否选取，所以进行取整操作。</p>
-</blockquote>
-<p><strong>2.5</strong> 某次会议中有30名议员，每两名议员或为政敌，或为朋友。而且，每个议员都恰有6个政敌。对于3个议员组成的委员会，若这三个人中任何两个人都是朋友或任何两个人都是政敌，则称之为奇异委员会。问：共有多少个奇异委员会？</p>
-<blockquote>
-<p><strong>解：</strong>转换为图的问题进行解决——构建顶点数量为30的完全图，对每条边进行染色，互为政敌染成红色，朋友则染成黑色。则原问题转话为寻找该完全图中，三条边同色的三角形数量。</p>
-<p>我们考虑对以下结构进行计数，即一个顶点的异色的两条边组成的角：</p>
-<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526154348386.png"  style="zoom:50%;" /></p>
-<p>首先设奇异委员会的数量为 $x$ ，则图中三边不同色的三角形的数量为 $C_{30}^3-x$ ，其中异色角的数量为 $(C_{30}^3-x)·2$</p>
-<p>此外，我们还可通过图中的点来进行计数, 每一个点的异色角的数量为：<br>$$<br>C_6^1·C_{23}^{1}<br>$$<br>综上：$2(C_{30}^3-x) = 30·C_6^1 C_{23}^1$ </p>
-</blockquote>
-<p><strong>2.6</strong>  考虑三角形面积公式、多边形内角和公式、梯形面积公式利用双计数进行推导</p>
-<p>证明：</p>
-<ul>
-<li>多边形内角和：<img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526155149526.png" style="zoom:50%;" /></li>
-</ul>
-<p>我们可以根据以上三种划分进行不同的内角和计数方式：</p>
-<p>$(1) = (n-2)<em>180 = (2) = (n</em>180)-360 = (3) = (n-1)*180-180$</p>
-<hr>
-<h4 id="3-三元组计数"><a href="#3-三元组计数" class="headerlink" title="3. 三元组计数"></a>3. 三元组计数</h4><ul>
-<li>在超图中，有 $\sum_{x \in X} d^{2}(x)=\sum_{A \in F}\sum_{x \in A} d(x)=\sum_{A \in F}\sum_{B\in F} |A \cap B |$</li>
-</ul>
-<blockquote>
-<p>证明：和第一节中的握手定理相比较不难发现，该等式是在对一个三元组 $(x,A,B), A,B\in F, x\in A,x\in B$ 进行计数，其中$A,B$均为超边集合，且此处$A,B$ 可以是相等的。证明三计数原理的关键在于结合<strong>乘法原理和加法原理</strong></p>
-<ul>
-<li>$\sum_{x \in X} d^{2}(x)$ : 固定一个顶点 $x$ ，有 $d^2(x)$ 个超边包含 $x$ . 包含 $x$ 的超边数为 $d(x)$, 则 $A,B$ 必须要在这 $d(x)$ 条超边中选择， 则 $A,B$ 选择的可能性为 $d^2(x)$。而 $x$ 是可变的，则有 $\sum_{x\in X}$</li>
-<li><p>$\sum_{A \in F}\sum_{x \in A} d(x)$ : 固定一个 $A$, 列出 $A$ 中所有 $x,x\in A$, 则对于 $B$ 而言，此时选择的可能有 $\sum_{x\in A}d(x)$; 而$A$ 可变的，则有 $\sum_{A \in F}$</p>
-</li>
-<li><p>$\sum_{A \in F}\sum_{B\in F} |A \cap B |$: 选定了 $A,B$, 则 $x$ 要同时在 $A,B$ 上，$x$ 的选法有 $|A \cap B|$ , 而 $A,B$ 都是可变的，则有 $\sum_{A \in F}\sum_{B\in F}$</p>
-</li>
-</ul>
-</blockquote>
-<ul>
-<li><p><strong>例题1</strong>：已知集合 $M=\{x_1,x_2,…,x_{4n+3}\}$ 它的 $4n+3$ 个子集合 $A_1,A_2,A_{4n+3}$ 具有以下性质：</p>
-<p>(1) $M$ 中每 $n+1$ 个元素恰属于唯一一个子集 $A_j$</p>
-<p>(2) $|A_i| \geq 2n+1(i=1,2,…,4n+3)$</p>
-<p>证明：任意两个子集 $A_i$ 与 $A_j (i&lt;j)$ 恰有 $n$ 个公共元</p>
-<p>思路：需要证明的是 $|A_i \cap A_j|=n$, 很容易联想到三计数中的集合 $|A\cap B|$。因此我们使用三计数来证明。</p>
-<blockquote>
-<p>首先构建 $(4n+3) \times (4n+3)$ 的关联矩阵，行为 $x$, 列为 $A$</p>
-<p>对该矩阵求和：$\sum_{x\in M} = \sum_{i=1}^{4n=3}|A_i|\geq(4n+3)(2n+1)$</p>
-<p>对以下三元组进行计数：$(x,A_i,A_j),1\leq i\leq j\leq 4n+3, x\in A_i,x\in A_j$</p>
-<ul>
-<li><p>固定 $x$: 则 $A_i,A_j$ 要在包含 $x$ 的超边中选择，且$A_i \neq A_j$,则计数结果为 $|S| = \sum_{x\in M}\left(\begin{array}{c}<br>d(x) \\<br>2<br>\end{array}\right)$</p>
-</li>
-<li><p>选定 $A_i,A_j$, 由于 $M$ 中每 $n+1$ 个元素恰属于唯一一个子集 $A_j$, 则 $A_i \cap A _j \leq n$, 则 $|S| \leq \left(\begin{array}{c}<br>4n+3 \\<br>2<br>\end{array}\right)·n$</p>
-</li>
-</ul>
-<p>根据柯西不等式（和证明H-free时候类似），可推出</p>
-<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200706161027321.png"  style="zoom:60%;" /></p>
-<p>综上，$|S| = \left(\begin{array}{c}<br>4n+3 \\<br>2<br>\end{array}\right)·n$</p>
-<p>所以 $|A_i \cap A_j|=n$</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li><strong>例题2</strong>. 设 $n$ 和 $k$ 是正整数，$S$ 是平面内 $n$ 个点的集合，满足：</li>
-</ul>
-<p>​    (1)$S$ 中任何三点不共线</p>
-<p>​    (2)对 $S$ 中每一点 $p$， $S$ 中至少有 $k$ 个点与 $p$ 的距离相等</p>
-<p>​    证明：$k&lt; \frac{1}{2} + \sqrt{2n}$</p>
-<blockquote>
-<p>证明：设 $S = \{p_1,p_2,…,p_n\}$,  $\{C_1,C_2,…,C_n\}$ 是以 $p_1,p_2,…,p_n$ 为圆心的圆， 对于圆 $C_i$, 圆上的点个数为 $x_i$, 由条件(2)知 $x_i \geq k$. 又由于每个点可能不仅在一个圆上，再设对于点 $p_i$, 它处于 $y_i$ 个圆上。</p>
-<p>则对所有圆上点的个数进行计数，得：<br>$$<br>x_1+x_2+···+x_n = y_1 + y_2 + ··· + y_n \geq n ·k<br>$$</p>
-<p>对以下三元组进行计数：<br>$$<br>(p_k,C_i,C_j),i&lt;j,p_k\in C_i,p_k \in C_j<br>$$</p>
-<ul>
-<li>选定 $C_i,C_j$ ，它们最多只能有两个交点，则 $|S|\leq 2 ·C_n^2$</li>
-<li>选定 $p_k$, 则 $|S| = \sum_{k=1}^n\left(\begin{array}{c}<br>y_k \\<br>2<br>\end{array}\right)$</li>
-</ul>
-<p>由 $\sum_{k=1}^n\left(\begin{array}{c}<br>y_k \\<br>2<br>\end{array}\right) \leq 2 ·C_n^2$, 利用柯西施瓦茨不等式可推出结果。</p>
-</blockquote>
-<hr>
-<h4 id="4-Turan-number"><a href="#4-Turan-number" class="headerlink" title="4. Turan number"></a>4. Turan number</h4><ul>
-<li><p>Turan number $T(n,k,l), l\leq k \leq n$: 对于一个 $n$ 元集合 $X$ ，从$X$ 中选择 $k$ 元子集和，要求<strong>任一 $k$ 元子集合至少包含一个 $l$ 元子集合</strong>，则需要的最少的 $l$ 元子集合的个数称作 Turan number.</p>
-</li>
-<li><p>Prove that: $T(n, k, l) \geq\left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)/ \left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)$</p>
-<blockquote>
-<p>证明：假设选取的满足要求的 $l$ 元子集合为 $F = {A_1,…,A_{|F|}}$，则可构造 $|F|\times C_{n}^{k}$ 的关联矩阵：</p>
-<ul>
-<li><p>按行来计数，对于一个固定的 $l$ 元子集合，有 $\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$ 个 $k$ 元子集合包含它，则行计数结果为 $|F|\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right)$</p>
-</li>
-<li><p>按列来计数，由Turan number的要求知，矩阵总每列都至少包含一个值为 $1$ 的元素，则列计数的下界为$\left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)$</p>
-</li>
-</ul>
-<p>得到：$|F|\left(\begin{array}{l}<br>n-l \\<br>k-l<br>\end{array}\right) \geq \left(\begin{array}{l}<br>n \\<br>k<br>\end{array}\right)$， 化简得到 $T(n, k, l) \geq\left(\begin{array}{l}<br>n \\<br>l<br>\end{array}\right)/ \left(\begin{array}{l}<br>k \\<br>l<br>\end{array}\right)$</p>
-</blockquote>
-</li>
-</ul>
-<p>启发：<em>当需要利用双计数思想证明一个不等式时，可以通过寻找行、列计数的某个上下界来证明</em></p>
-<hr>
-<h4 id="5-H-free问题"><a href="#5-H-free问题" class="headerlink" title="5. H-free问题"></a>5. H-free问题</h4><ul>
-<li>问题定义：令 $H$ 为一个固定的图，如果一个图 $G$ 是 $H-free$ 的，即 $G$ 中不含一个子图 $H$, 那么在这情况下一个有着 $n$ 个的顶点的图 $G$ 最多能有多少条边呢？ （可以设想如果图 $G$ 中所有点之间都有边相连，那么必不可能为 $H-free$）</li>
-<li>定理：如果图 $G(V,E)，|V|=n$ 中不存在 $4-cycles$，那么必有:</li>
-</ul>
-<p>$$<br>|E|\leq \frac{n}{4}\lfloor 1 + \sqrt{4n-3} \rfloor<br>$$</p>
-<blockquote>
-<p><strong>证明：</strong></p>
-<p>先给出一个实例来验证，对于右图，顶点数为5，则由定理知最多有6条边，正确。<img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526155042159.png" style="zoom:25%;" /></p>
-<p>设有点集合为 $V=\{1,2,…,n\}$, 对以下集合进行计数：<br>$$<br>S = \{(u,\{v,w\})|v \neq w,u与v,w都邻接\}<br>$$<br>即在图中计数<img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526152949256.png" style="zoom:35%;" /> 该种结构。</p>
-<ul>
-<li><p>固定 $u$，则 $v,w$ 必须在 $v$ 的 neighbor 中选，有 $\left(\begin{array}{c}<br>d(u) \\<br> 2<br>\end{array}\right)$ 种选法—— Fix $u$, $|S| = \sum_{u\in V}\left(\begin{array}{c}<br>d(u) \\<br>2<br>\end{array}\right)$</p>
-</li>
-<li><p>固定 $v,w$， 最多只能有一个 $u$ 和它们相连（如果两个的话就构成了一个4-cycle），而 $v,w$ 是可变的—— Fix $v,w$，$|S|\leq \left(\begin{array}{l}<br>n \\<br>2<br>\end{array}\right) · 1$</p>
-</li>
-</ul>
-<p>由以上，可得到 $\sum_{u\in V}\left(\begin{array}{c}<br>d(u) \\<br>2<br>\end{array}\right) \leq \left(\begin{array}{l}<br>n \\<br>2<br>\end{array}\right)$</p>
-<p>化简得 $\sum_{u\in V}d^2(u)\leq \sum_{u\in V} d(u) + n(n-1)$</p>
-<p>利用<em><a href="[https://baike.baidu.com/item/%E6%9F%AF%E8%A5%BF%E4%B8%8D%E7%AD%89%E5%BC%8F](https://baike.baidu.com/item/柯西不等式">柯西不等式</a>)</em>，可进一步化简证明。</p>
-</blockquote>
-<p>疑问：<em>为何证明4-cycle free时需要对这种特殊的结构进行计数呢？</em></p>
-<hr>
-<h4 id="6-广义双计数"><a href="#6-广义双计数" class="headerlink" title="6. 广义双计数"></a>6. 广义双计数</h4><ul>
-<li><p>关联：假设给定两个有限集（finite sets）$R$ 和 $C$ , 一个子集 $S \subseteq R\times C$，$\times$ 为叉积/笛卡尔积。如果 $(p,q)\in S$，我们称 $p$ 和 $q$ 是<strong>关联</strong>（incident）的。</p>
-</li>
-<li><p>$r_p$ ：与 $p$ 关联的元素个数； $c_p$: 与 $q$ 关联的元素个数</p>
-</li>
-<li>我们有以下广义双计数定理：</li>
-</ul>
-<p>$$<br>\sum_{p\in R}r_p= |S| = \sum_{q\in C}c_q<br>$$</p>
-<p>我们可以构建 $p$ 和 $q$ 的关联矩阵（incident matrix）： $A = (a_{pq})$，则上式左右两端分别为行、列计数方式。关联矩阵的行和列均用 $R$ 和 $C$ 的元素进行索引，有：<br>$$<br>a_{pq} = 1,if(p.q)\in S,else \space 0<br>$$</p>
-<blockquote>
-<ul>
-<li>例子：令 $R=C=\{1,2,…,n\}$，集合 $S=\{(i,j): i整除j\}$， $t(j)$ 为 $j$ 的因子（divisor）个数，我们对该关联矩阵计数，即在计数 $\sum t_j$</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200526155652035.png" style="zoom:33%;" /></p>
-<p>$t(j)$ 的取值是<strong>跳跃性较大</strong>的，且具有以下规律：$t(2^k) = k+1,t(素数) =2$</p>
-<p>我们试图求 $t(j)$ 的平均值，即：$\overline{t(j)} = \frac{1}{n}\sum_{j=1}^{n}t(j)$ 的值：</p>
-<ul>
-<li><p>按列求和：$\frac{1}{n}\sum_{j=1}^{n}t(j)$， 即对因子个数进行计数</p>
-</li>
-<li><p>按行求和：对倍数的个数进行计数，如2的小于等于8的倍数有：2，4，6，8；<br>$$<br>\frac{1}{n}\sum_{i=1}^{n}\lfloor \frac{n}{i} \rfloor \leq \frac{1}{n}\sum_{i=1}^{n}\frac{n}{i} = \sum_{i=1}^n \frac{1}{i} \approx ln(n)<br>$$<br>这是一个<a href="https://zh.wikipedia.org/wiki/%E8%B0%83%E5%92%8C%E7%BA%A7%E6%95%B0" target="_blank" rel="noopener">调和级数</a>，可以用部分和 $ln(n)$ 来近似</p>
-<ul>
-<li>误差分析：第一个不等式带来的误差至多为1, 而部分和近似带来的误差也小于1 （可通过画函数图和积分面积来理解：$ln(n) &lt; \sum_{i=1}^{n} \frac{1}{i}&lt; ln(n) + 1$），所以整体的计数误差 $&lt;2$</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<hr>
-<h4 id="7-Zarankiewicz问题"><a href="#7-Zarankiewicz问题" class="headerlink" title="7. Zarankiewicz问题"></a>7. Zarankiewicz问题</h4><p>问题描述：给定 $n\times n$ 的 0-1 矩阵，若不能出现 $a\times b$ 的全 $1$ 子矩阵 （a,b为任意值），则该矩阵最多能有多少个为 1 的元素？</p>
-<p>问题关键：如何判定图中是否存在这样的局部全 $1$ 子矩阵？</p>
-<ul>
-<li><p>使用<strong>二分图</strong>来对问题进行转换并建模：构建二分图 $G=(V_1,V_2,E)$, 其中$V_1,V_2$ 为大小为 $n$ 的独立集，$E\in V_1\times V_2$ 为边集合。</p>
-<ul>
-<li><p>矩阵元素 $\leftrightarrow$ 二分图中的边</p>
-</li>
-<li><p>令 $K_a(n)$ 表示——二分图中超过 $K_a(n)$ 条边时，至少会包含一个 $a\times a$ 的 clique，我们要求的就是 $K_a(n)$ 的上界，即为原问题中为1的元素的数量的上界</p>
-</li>
-<li>结论： $K_{a}(n) \leq(a-1)^{1 / a} n^{2-1 / a}+(a-1) n$</li>
-</ul>
-</li>
-</ul>
-<p>研究：当边数小于某个数时，一定不包含 $a\times a$ 的 clique （recall: H-free问题 $\leftrightarrow$ <strong>$a\times a$ clique-free</strong>）</p>
-<p>定义待计数集合： $S=\{(x,A),x\in V1,A\subseteq V_2,|A|=a\}$, $x$ 是 $V_1$ 中的可变节点，$A$ 是 $V_2$ 中的 $n$ 元子集合，其中 $x$ 和 $A$ 中的点都有边相连，所以我们是对以下结构进行计数：</p>
-<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200518194743783.png" style="zoom:33%;" /></p>
-<ul>
-<li>首先固定 $x$，则 $A$ 元集合必须在 $x$ 的邻接节点中选择：</li>
-</ul>
-<p>$$<br>|S|=\sum_{x\in V_1} \left(\begin{array}{c}<br>d(x) \\<br>a<br>\end{array}\right)<br>$$</p>
-<ul>
-<li>固定 $A$,  最多可有$(a-1)$ 个 $x$ 和 $A$ 中所有点都有边相连(如果出现 $a$ 个的话即构成 $a\times a$ clique), 而 $A$ 是可变的，即有 $\left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right)$ 种可能性</li>
-</ul>
-<p>$$<br>|S| \leq \left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right) (a-1)<br>$$</p>
-<p>由上，得到<br>$$<br>\frac{1}{n}\sum_{x\in V_1} \left(\begin{array}{c}<br>d(x) \\<br>a<br>\end{array}\right) \leq \left(\begin{array}{c}<br>n \\<br>a<br>\end{array}\right) (a-1)<br>$$<br>对以上不等式进行推导：</p>
-<p>函数 $f(x) = \left(\begin{array}{l}<br>x \\<br>a<br>\end{array}\right)=\frac{x(x-1)··(x-(a-1))}{a!} $ 当 $x\geq a-1$ 时是凸函数，可以使用Jensen不等式（<a href="https://baike.baidu.com/item/%E7%90%B4%E7%94%9F%E4%B8%8D%E7%AD%89%E5%BC%8F" target="_blank" rel="noopener">Jensen不等式</a>：$\sum_{i=1}^s\lambda_if(x_i)\geq f(\sum_{i=1}^s \lambda_ix_i)$）：<br>$$<br>\frac{1}{n}\sum_{x\in V_1} \left(\begin{array}{c}<br>d(x) \\<br>a<br>\end{array}\right) \geq \left(\begin{array}{c}<br>\frac{1}{n}\sum_{x\in V_1}d(x) \\<br>a<br>\end{array}\right)<br>$$<br>由 $\sum_{x\in V_1}d(x) = |E|$， 可得：<br>$$<br>n\left(\begin{array}{c}<br>\frac{|E|}{n} \\<br>a<br>\end{array}\right) = \frac{n(\frac{|E|}{n})(\frac{|E|}{n}-1)··(\frac{|E|}{n}- (a-1))}{a!} \leq \left(\begin{array}{l}<br>n \\<br>a<br>\end{array}\right) (a-1) \leq \frac{n(n-1)··(n-(a-1))}{a!} (a-1) &lt; \frac{n^a}{a!}(a-1)<br>$$<br>化简得，<br>$$<br>n(\frac{|E|}{n}-(a-1))^{a} &lt; \frac{n^a}{a!}(a-1)<br>$$<br>解得：<br>$$<br>|E| \leq(a-1)^{1 / a} n^{2-1 / a}+(a-1) n<br>$$<br>证毕。</p>
-<p>注：该问题也可以使用<strong>概率方法</strong>进行求解</p>
-<hr>
-<h4 id="8-Sperner’s-Lemma-（斯波纳引理）"><a href="#8-Sperner’s-Lemma-（斯波纳引理）" class="headerlink" title="8. Sperner’s Lemma （斯波纳引理）"></a>8. Sperner’s Lemma （斯波纳引理）</h4><ul>
-<li>引理描述：</li>
-<li><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200519154341291.png" style="zoom:40%;" /></li>
-</ul>
-<p>如图所示，一个大三角形被内部任意的顶点分成多个小三角形，用三种颜色对每个顶点进行，染色遵循以下规则：大三角形的三个顶点的颜色不能相同，边上顶点的颜色必须与该边上的两个大三角形的顶点颜色相同，而大三角形内部的顶点染色是无限制的。</p>
-<p>则<strong>必存在一种小三角形的三个顶点颜色不同，且这种小三角形的个数为奇数</strong></p>
-<ul>
-<li>证明思路： 根据握手定理的推论，即图中<strong>度数为奇数的点必为偶数个</strong></li>
-</ul>
-<p>为了使用这个推论，我们建立原图的<a href="https://en.wikipedia.org/wiki/Dual_graph" target="_blank" rel="noopener">对偶图</a>，即将各小三角形(a,b,c,d,e,f,g,h)的中心视作新的顶点，将新顶点相连；不同的是，我们只对一些满足特点条件的顶点进行连接：<strong>若两个新顶点之间的连线经过边 $E_{12}$, 即边两端颜色为1和2，则将该两新顶点之间连线</strong> （如图中三角形a和b的中心作为新顶点相连。</p>
-<p>由以上规则，则会出现以下几种不同度数的小三角形：</p>
-<p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200525191009398.png" style="zoom:50%;" /></p>
-<p>下图即为从原图导出的满足以上条件的对偶图：</p>
-<p>​    <img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20200525191752043.png" style="zoom:20%;margin-left:30%" /></p>
-<p>其中 $i$ 表示三角形外的区域，它被单独视作一个顶点；对于节点 $i$, 它的度数必为奇数（可以将大三角形1,2这条边上的相邻的同色顶点合并，则易知必出现奇数个1,2颜色的连线）；而由握手定理可知，图中度数为奇数的节点个数必为偶数，则大三角形中必存在奇数个度数为奇数的小三角形，即度数为1的 小三角形，也即三个顶点颜色不同的小三角形。</p>
-<p>此外附上维基百科中关于斯波纳引理的介绍和证明，写的非常详细：<a href="https://en.wikipedia.org/wiki/Sperner&#39;s_lemma" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Sperner%27s_lemma</a></p>
+<p>这样的作法也就决定了—它要预测的不是分割任务中每个像素点上类 one-hot 的概率分布，而是跨channel 的在不同像素点 （即各关键点）上的均匀分布。</p>
+<h2 id="2-代码解读"><a href="#2-代码解读" class="headerlink" title="2. 代码解读"></a>2. 代码解读</h2><pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">AELoss</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> loss_type<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>loss_type <span class="token operator">=</span> loss_type
+
+    <span class="token keyword">def</span> <span class="token function">singleTagLoss</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pred_tag<span class="token punctuation">,</span> joints<span class="token punctuation">)</span><span class="token punctuation">:</span>  
+        <span class="token triple-quoted-string string">"""                                     
+        associative embedding loss for one image 
+        1. group损失的计算是依次在batch中的每个图片进行的
+        2. Input tensor size: 
+        (1)pred_tag: [num_keypoints, feature_size * feature_size] 
+        显然pred_tag在计算loss时需要先进行flatten，
+        方便通过index来索引某个关键点对应的tag值
+
+        (2)joints: [num_person, num_keypoints, 2]
+        最后的二维为一个2元tuple——(location, visible)，
+        由于pred_tag被flatten,所以这里的location为关键点
+        坐标(x,y)对应的展开后的索引位置, visible 的值为 0或者1
+        """</span>
+        tags <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> 
+        <span class="token comment" spellcheck="true"># tags用来记录所有人的 reference tag, 即 tag_value 的均值</span>
+        pull <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> joints_per_person <span class="token keyword">in</span> joints<span class="token punctuation">:</span> 
+            <span class="token comment" spellcheck="true"># 第一个循环对单个人的姿态进行处理</span>
+            tmp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token comment" spellcheck="true"># tmp 用来记录每个人所有关键点对应的 pred_tag 的值</span>
+            <span class="token keyword">for</span> joint <span class="token keyword">in</span> joints_per_person<span class="token punctuation">:</span> 
+                <span class="token comment" spellcheck="true"># 第二个循环对姿态中的关键点逐一处理</span>
+                <span class="token keyword">if</span> joint<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                    <span class="token comment" spellcheck="true"># (location, visible)[1] = visible，不可见的点不计算损失</span>
+                    tmp<span class="token punctuation">.</span>append<span class="token punctuation">(</span>pred_tag<span class="token punctuation">[</span>joint<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                    <span class="token comment" spellcheck="true"># tag_value = pred_tag[location] </span>
+            <span class="token keyword">if</span> len<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span> 
+                <span class="token keyword">continue</span>
+            tmp <span class="token operator">=</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
+            tags<span class="token punctuation">.</span>append<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>tmp<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
+            <span class="token comment" spellcheck="true"># 计算该人所有关键点的 tag_value 的均值作为 reference tag</span>
+            pull <span class="token operator">=</span> pull <span class="token operator">+</span> torch<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">(</span>tmp <span class="token operator">-</span> tags<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span> 
+            <span class="token comment" spellcheck="true"># 使用方差计算当前person的 pull loss</span>
+
+        num_tags <span class="token operator">=</span> len<span class="token punctuation">(</span>tags<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> num_tags <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> make_input<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>float<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> \
+                make_input<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>float<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> num_tags <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> make_input<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>float<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> \
+                pull<span class="token operator">/</span><span class="token punctuation">(</span>num_tags<span class="token punctuation">)</span>
+
+        tags <span class="token operator">=</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>tags<span class="token punctuation">)</span>
+
+        size <span class="token operator">=</span> <span class="token punctuation">(</span>num_tags<span class="token punctuation">,</span> num_tags<span class="token punctuation">)</span>
+        A <span class="token operator">=</span> tags<span class="token punctuation">.</span>expand<span class="token punctuation">(</span><span class="token operator">*</span>size<span class="token punctuation">)</span>
+        B <span class="token operator">=</span> A<span class="token punctuation">.</span>permute<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+        diff <span class="token operator">=</span> A <span class="token operator">-</span> B
+
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>loss_type <span class="token operator">==</span> <span class="token string">'exp'</span><span class="token punctuation">:</span>
+            diff <span class="token operator">=</span> torch<span class="token punctuation">.</span>pow<span class="token punctuation">(</span>diff<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+            push <span class="token operator">=</span> torch<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span>diff<span class="token punctuation">)</span>
+            push <span class="token operator">=</span> torch<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>push<span class="token punctuation">)</span> <span class="token operator">-</span> num_tags
+        <span class="token keyword">elif</span> self<span class="token punctuation">.</span>loss_type <span class="token operator">==</span> <span class="token string">'max'</span><span class="token punctuation">:</span>
+            diff <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> torch<span class="token punctuation">.</span>abs<span class="token punctuation">(</span>diff<span class="token punctuation">)</span>
+            push <span class="token operator">=</span> torch<span class="token punctuation">.</span>clamp<span class="token punctuation">(</span>diff<span class="token punctuation">,</span> min<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sum<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> num_tags
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">'Unkown ae loss type'</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">return</span> push<span class="token operator">/</span><span class="token punctuation">(</span><span class="token punctuation">(</span>num_tags <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> num_tags<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.5</span><span class="token punctuation">,</span> \
+            pull<span class="token operator">/</span><span class="token punctuation">(</span>num_tags<span class="token punctuation">)</span>
+
+     <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> tags<span class="token punctuation">,</span> joints<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        accumulate the tag loss for each image in the batch
+        """</span>
+        pushes<span class="token punctuation">,</span> pulls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        joints <span class="token operator">=</span> joints<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        batch_size <span class="token operator">=</span> tags<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>batch_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            push<span class="token punctuation">,</span> pull <span class="token operator">=</span> self<span class="token punctuation">.</span>singleTagLoss<span class="token punctuation">(</span>tags<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> joints<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            pushes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>push<span class="token punctuation">)</span>
+            pulls<span class="token punctuation">.</span>append<span class="token punctuation">(</span>pull<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>pushes<span class="token punctuation">)</span><span class="token punctuation">,</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>pulls<span class="token punctuation">)</span>       
+</code></pre>
 
             </div>
             <hr/>
@@ -674,7 +543,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://hb-liu.github.io/double-count/">http://hb-liu.github.io/double-count/</a>
+                    <a href="http://hb-liu.github.io/associative-embedding/">http://hb-liu.github.io/associative-embedding/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -712,12 +581,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%9B%BE%E8%AE%BA/">
-                                    <span class="chip bg-color">图论</span>
-                                </a>
-                            
-                                <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/">
-                                    <span class="chip bg-color">组合数学</span>
+                                <a href="/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1%EF%BC%8Cbottom-up/">
+                                    <span class="chip bg-color">姿态估计，bottom-up</span>
                                 </a>
                             
                         </div>
@@ -882,9 +747,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/associative-embedding/">
                     <div class="card-image">
@@ -902,9 +768,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-08
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-08
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -921,6 +787,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -939,29 +806,27 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/probility/">
+                <a href="/double-count/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="图论——概率方法">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="图论——双计数">
                         
-                        <span class="card-title">图论——概率方法</span>
+                        <span class="card-title">图论——双计数</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            图论笔记——概率方法1. 基本概念证明存在性，有两种思路：
+                            图论笔记——双计数1. 握手定理1.1 定义
+握手定理： 对于图 $G= (V,E)$ ， 有 $\sum_{v\in V}d(v) = 2|E|$
 
-构造性：直接构造出需要证明存在的目标
-非构造性：往往很难直接构造，所以采用非构造性方法，比如归纳等；概率方法就属于非构造性方法
-
-概率方法 (probabilistic meth
+握手定理说明所有顶点的度数为两倍的边数（顶点之间握手相当于顶点间连一条边，一条边使得两个
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-06
                             </span>
                         <span class="publish-author">
                             
@@ -982,8 +847,8 @@
                         <span class="chip bg-color">图论</span>
                     </a>
                     
-                    <a href="/tags/%E6%A6%82%E7%8E%87%E6%96%B9%E6%B3%95/">
-                        <span class="chip bg-color">概率方法</span>
+                    <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/">
+                        <span class="chip bg-color">组合数学</span>
                     </a>
                     
                 </div>
