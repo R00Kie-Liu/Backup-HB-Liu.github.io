@@ -376,12 +376,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-category">
-                                论文笔记
-                            </a>
-                        
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" class="post-category">
-                                姿态估计
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" class="post-category">
+                                论文笔记,姿态估计
                             </a>
                         
                     </div>
@@ -402,14 +398,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    736
+                    953
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -436,7 +432,7 @@
 <li>不同的 Instance 的像素点上的预测值存在一定差异 （push）</li>
 </ul>
 <p>这样的作法也就决定了—它要预测的不是分割任务中每个像素点上类 one-hot 的概率分布，而是跨channel 的在不同像素点 （即各关键点）上的均匀分布。</p>
-<h2 id="2-代码解读"><a href="#2-代码解读" class="headerlink" title="2. 代码解读"></a>2. 代码解读</h2><pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">AELoss</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h2 id="2-代码解读"><a href="#2-代码解读" class="headerlink" title="2. 代码解读"></a>2. 代码解读</h2><h3 id="训练阶段—-AE-loss-进行训练"><a href="#训练阶段—-AE-loss-进行训练" class="headerlink" title="训练阶段— AE loss 进行训练"></a>训练阶段— AE loss 进行训练</h3><pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">AELoss</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> loss_type<span class="token punctuation">)</span><span class="token punctuation">:</span>
         super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
         self<span class="token punctuation">.</span>loss_type <span class="token operator">=</span> loss_type
@@ -518,7 +514,61 @@
             pulls<span class="token punctuation">.</span>append<span class="token punctuation">(</span>pull<span class="token punctuation">)</span>
         <span class="token keyword">return</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>pushes<span class="token punctuation">)</span><span class="token punctuation">,</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>pulls<span class="token punctuation">)</span>       
 </code></pre>
+<h3 id="测试阶段—-根据-tag-进行-grouping"><a href="#测试阶段—-根据-tag-进行-grouping" class="headerlink" title="测试阶段— 根据 tag 进行 grouping"></a>测试阶段— 根据 tag 进行 grouping</h3><pre><code>class HeatmapParser(object):
+    def __init__(self, cfg):
+        self.params = Params(cfg)
+        self.tag_per_joint = cfg.MODEL.TAG_PER_JOINT
+        self.pool = torch.nn.MaxPool2d(
+            cfg.TEST.NMS_KERNEL, 1, cfg.TEST.NMS_PADDING
+        )
 
+    def nms(self, det):
+        maxm = self.pool(det)
+        maxm = torch.eq(maxm, det).float()
+        det = det * maxm
+        return det
+
+    def match(self, tag_k, loc_k, val_k):
+        match = lambda x: match_by_tag(x, self.params)
+        return list(map(match, zip(tag_k, loc_k, val_k)))
+
+    def top_k(self, det, tag):
+        # det = torch.Tensor(det, requires_grad=False)
+        # tag = torch.Tensor(tag, requires_grad=False)
+
+        det = self.nms(det)
+        num_images = det.size(0)
+        num_joints = det.size(1)
+        h = det.size(2)
+        w = det.size(3)
+        det = det.view(num_images, num_joints, -1)
+        val_k, ind = det.topk(self.params.max_num_people, dim=2)
+
+        tag = tag.view(tag.size(0), tag.size(1), w*h, -1)
+        if not self.tag_per_joint:
+            tag = tag.expand(-1, self.params.num_joints, -1, -1)
+
+        tag_k = torch.stack(
+            [
+                torch.gather(tag[:, :, :, i], 2, ind)
+                for i in range(tag.size(3))
+            ],
+            dim=3
+        )
+
+        x = ind % w
+        y = (ind / w).long()
+
+        ind_k = torch.stack((x, y), dim=3)
+
+        ans = {
+            &#39;tag_k&#39;: tag_k.cpu().numpy(),
+            &#39;loc_k&#39;: ind_k.cpu().numpy(),
+            &#39;val_k&#39;: val_k.cpu().numpy()
+        }
+
+        return ans
+</code></pre>
             </div>
             <hr/>
 
@@ -747,52 +797,53 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/associative-embedding/">
+                <a href="/effective-python-pythonic/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="论文解读——Associative Embedding">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="efficient_python_pythonic">
                         
-                        <span class="card-title">论文解读——Associative Embedding</span>
+                        <span class="card-title">efficient_python_pythonic</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            详解Associative Embedding 论文grouping方式和相关代码
+                            Pythonic1. python 版本查看python版本：
+python -version
+
+或者使用内置的 sys 模块获取信息
+import sys
+print(sys.version_info)
+
+3.7.4 (default, 
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-08
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-15
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    论文笔记
-                                </a>
-                            
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" class="post-category">
-                                    姿态估计
+                            <a href="/categories/Effective-Python/" class="post-category">
+                                    Effective Python
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1%EF%BC%8Cbottom-up/">
-                        <span class="chip bg-color">姿态估计，bottom-up</span>
+                    <a href="/tags/Python/">
+                        <span class="chip bg-color">Python</span>
                     </a>
                     
                 </div>
@@ -818,10 +869,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            图论笔记——双计数1. 握手定理1.1 定义
-握手定理： 对于图 $G= (V,E)$ ， 有 $\sum_{v\in V}d(v) = 2|E|$
-
-握手定理说明所有顶点的度数为两倍的边数（顶点之间握手相当于顶点间连一条边，一条边使得两个
+                            组合数学的一种证明方法——双计数
                         
                     </div>
                     <div class="publish-info">
