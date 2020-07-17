@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="efficient_python_pythonic, 深度不学习">
+    <meta name="keywords" content="Effective Python 阅读笔记(1)——Pythonic, 深度不学习">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>efficient_python_pythonic | 深度不学习</title>
+    <title>Effective Python 阅读笔记(1)——Pythonic | 深度不学习</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -242,12 +242,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">efficient_python_pythonic</h1>
+                    <h1 class="description center-align post-title">Effective Python 阅读笔记(1)——Pythonic</h1>
                 </div>
             </div>
         </div>
@@ -398,14 +398,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    3.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    16 分
                 </div>
                 
 
@@ -564,10 +564,9 @@ x <span class="token operator">=</span> w<span class="token punctuation">.</span
 y <span class="token operator">=</span> x<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
 z <span class="token operator">=</span> y<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span>
 </code></pre>
-<pre class=" language-Error"><code class="language-Error">>>>
-UnicodeDecodeError: 'utf-8' codec can't decode byte 0xa2 in position 0: invalid start byte
-</code></pre>
-<ul>
+<pre><code>&gt;&gt;&gt;
+UnicodeDecodeError: &#39;utf-8&#39; codec can&#39;t decode byte 0xa2 in position 0: invalid start byte
+</code></pre><ul>
 <li>此外，切割列表时，如果指定了 stride，那么代码将变得非常费解：</li>
 </ul>
 <pre class=" language-python"><code class="language-python">a<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">]</span>
@@ -600,9 +599,8 @@ list2 <span class="token operator">=</span> <span class="token punctuation">[</s
 list3 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">77</span><span class="token punctuation">,</span><span class="token number">88</span><span class="token punctuation">,</span><span class="token number">99</span><span class="token punctuation">]</span>
 list<span class="token punctuation">(</span>map<span class="token punctuation">(</span>abc<span class="token punctuation">,</span>list1<span class="token punctuation">,</span>list2<span class="token punctuation">,</span>list3<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre>
-<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token number">114477</span><span class="token punctuation">,</span> <span class="token number">225588</span><span class="token punctuation">,</span> <span class="token number">336699</span><span class="token punctuation">]</span>
-</code></pre>
-<p>当然，map 最常见的还是和 lambda 的配合：</p>
+<pre><code>&gt;&gt;&gt; [114477, 225588, 336699]
+</code></pre><p>当然，map 最常见的还是和 lambda 的配合：</p>
 <pre class=" language-python"><code class="language-python">list<span class="token punctuation">(</span>map<span class="token punctuation">(</span>lambada x<span class="token punctuation">:</span>x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre>
 <pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">25</span><span class="token punctuation">]</span>
@@ -625,9 +623,8 @@ squares <span class="token operator">=</span> <span class="token punctuation">[<
 <pre class=" language-python"><code class="language-python">even_squares <span class="token operator">=</span> <span class="token punctuation">[</span>x<span class="token operator">**</span><span class="token number">2</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> a <span class="token keyword">if</span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>even_squares<span class="token punctuation">)</span>
 </code></pre>
-<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">]</span>
-</code></pre>
-<p>将map 和 filter 结合起来也能实现相同的功能，但此时代码将相当凌乱， 特别是在Python3中map函数将不再直接返回list后，还需要使用list()进行强制转换：</p>
+<pre><code>&gt;&gt;&gt; [4,16]
+</code></pre><p>将map 和 filter 结合起来也能实现相同的功能，但此时代码将相当凌乱， 特别是在Python3中map函数将不再直接返回list后，还需要使用list()进行强制转换：</p>
 <pre><code>alt = list(map(lambda x:x ** 2, filter(lambda x: x % 2 == 0, a)))
 </code></pre><p>注： 字典（dict）和集（set）也支持推导</p>
 <h2 id="8-列表推导中不要含有两个以上的表达式"><a href="#8-列表推导中不要含有两个以上的表达式" class="headerlink" title="8. 列表推导中不要含有两个以上的表达式"></a>8. 列表推导中不要含有两个以上的表达式</h2><p>列表推导支持<strong>多重循环</strong>和<strong>多重条件</strong>：</p>
@@ -638,10 +635,9 @@ squares <span class="token operator">=</span> <span class="token punctuation">[<
 flat <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> row <span class="token keyword">in</span> matrix <span class="token keyword">for</span> x <span class="token keyword">in</span> row<span class="token punctuation">]</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'flatten'</span><span class="token punctuation">,</span>flat<span class="token punctuation">)</span>
 </code></pre>
-<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span>
-flatten <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">]</span>
-</code></pre>
-<ul>
+<pre><code>&gt;&gt;&gt;
+flatten [1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre><ul>
 <li>多重条件 (各条件间默认形成and表达式)</li>
 </ul>
 <pre class=" language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span>
@@ -665,7 +661,164 @@ flat <span class="token operator">=</span> <span class="token punctuation">[</sp
     <span class="token keyword">for</span> sublist2 <span class="token keyword">in</span> sublist1<span class="token punctuation">:</span>
         flat<span class="token punctuation">.</span>extend<span class="token punctuation">(</span>sublist2<span class="token punctuation">)</span>
 </code></pre>
-<h2 id="9-用生成器表达式来改写数据量较大的列表推导"><a href="#9-用生成器表达式来改写数据量较大的列表推导" class="headerlink" title="9. 用生成器表达式来改写数据量较大的列表推导"></a>9. 用生成器表达式来改写数据量较大的列表推导</h2>
+<h2 id="9-用生成器表达式来改写数据量较大的列表推导"><a href="#9-用生成器表达式来改写数据量较大的列表推导" class="headerlink" title="9. 用生成器表达式来改写数据量较大的列表推导"></a>9. 用生成器表达式来改写数据量较大的列表推导</h2><p>列表推导也存在着它的缺点：推导过程中，对于输入序列的每个值来说，可能都要创建仅含一项元素的全新列表，但输入数据非常多的时候，就会消耗大量内存，并导致程序崩溃。为此，Python 提供了<strong>生成器</strong>（generator expression）表达式，在运行时，它不会将整个输出序列都表达出来，而是会估值为<strong>迭代器</strong>（iterator），这个迭代器每次可以根据生成器表达式仅生成一项数据。</p>
+<p>构建生成器表达式最简单的一个方法就是将上述列表推导的写法用放入一对<strong>圆括号</strong>而不是方括号中：</p>
+<pre class=" language-python"><code class="language-python">it <span class="token operator">=</span> <span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> open<span class="token punctuation">(</span><span class="token string">'/tmp/my_file.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+&lt;&lt;generator object &lt;genexpr&gt; at 0x0000022E7E372228&gt;&gt;
+</code></pre><p>对生成器表达式求值的时候它会<strong>立即返回一个迭代器</strong>，而不会深入输入处理文件内容。</p>
+<p>当我们需要生成数据时，只需要以刚才返回的迭代器作为参数，传入内置的 <code>next</code> 函数，即可使得其按照生成器表达式来输出：</p>
+<pre class=" language-python"><code class="language-python">next<span class="token punctuation">(</span>it<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token number">100</span>
+next<span class="token punctuation">(</span>it<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token number">57</span>
+</code></pre>
+<p>当然，迭代器显然是一个可迭代对象，可以直接使用 <code>for</code> 循环来进行输出：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> content <span class="token keyword">in</span> it<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token number">100</span>
+<span class="token number">57</span>
+<span class="token number">36</span>
+<span class="token number">33</span>
+<span class="token number">12</span>
+</code></pre>
+<ul>
+<li><strong>生成器表达式可以相互结合</strong>，即将某个生成器表达式返回的迭代器，放在另一个生成器表达式的 <code>for</code> 子表达式中，串在一起的表达式执行速度很快：</li>
+</ul>
+<pre class=" language-python"><code class="language-python">roots <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x<span class="token operator">**</span><span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> it<span class="token punctuation">)</span>
+</code></pre>
+<p>外围迭代器每次前进都会推动内部迭代器：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>roots<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+</code></pre>
+<h2 id="10-用enumerate代替range"><a href="#10-用enumerate代替range" class="headerlink" title="10. 用enumerate代替range"></a>10. 用enumerate代替range</h2><p>在对字符串或者列表进行迭代时，我们常常想知道当前元素所在的位置，一种最通常的做法就是使用<code>range</code>:</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>somelist<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    flavor <span class="token operator">=</span> somelist<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d: %s'</span> <span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> flavor<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<p>与单纯迭代 somelist 相比，上述代码显得有些生硬，我们必须获取列表长度，再通过下标访问元素。</p>
+<ul>
+<li><p>Python 内置的<code>enumerate</code> 函数就是用来解决此问题的，它可以<strong>把各种可迭代对象包装为生成器</strong>，以便稍后产生输出值。生成器每次产生一对输出值，前者表示循环下标，后者表示从迭代器中获取到的元素：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> i<span class="token punctuation">,</span> flavor <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>somelist<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d: %s'</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> flavor<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+<li><p>此外，还可以指定<code>enumerate</code> 函数<strong>开始计数时所用的值</strong>（默认从0开始）：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> i<span class="token punctuation">,</span> flavor <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>somelist<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d: %s'</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> flavor<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ul>
+<h2 id="11-用zip函数同时遍历两个迭代器"><a href="#11-用zip函数同时遍历两个迭代器" class="headerlink" title="11. 用zip函数同时遍历两个迭代器"></a>11. 用zip函数同时遍历两个迭代器</h2><p>当两个列表之间对应元素存在关联时，我们常常想要平行地迭代这两个列表，进行关系的比较：</p>
+<pre class=" language-python"><code class="language-python">names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Ken'</span><span class="token punctuation">,</span><span class="token string">'Mike'</span><span class="token punctuation">,</span><span class="token string">'Clover'</span><span class="token punctuation">]</span>
+length <span class="token operator">=</span> <span class="token punctuation">[</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> name<span class="token punctuation">]</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python">longest_name <span class="token operator">=</span> None
+max_length <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    count <span class="token operator">=</span> length<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">if</span> count <span class="token operator">></span> max_length<span class="token punctuation">:</span>
+        max_length <span class="token operator">=</span> count
+        longest_name <span class="token operator">=</span> name<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+</code></pre>
+<p>以上写法看上去就很混乱，虽然我们可以使用 <code>enumerate</code> 稍微精简一些，但仍不理想。</p>
+<ul>
+<li><p>Python 中的<code>zip</code> 函数能够<strong>将两个或以上的迭代器封装为生成器</strong>，它会把每个迭代器取出下一个值，将这些值汇聚成<strong>元组</strong>：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> <span class="token punctuation">(</span>name<span class="token punctuation">,</span> count<span class="token punctuation">)</span> <span class="token keyword">in</span> zip<span class="token punctuation">(</span>names<span class="token punctuation">,</span>length<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token keyword">if</span> count <span class="token operator">></span> max_length<span class="token punctuation">:</span>
+      max_length <span class="token operator">=</span> count
+      longest_name <span class="token operator">=</span> name
+</code></pre>
+</li>
+<li><p>需要注意，当两个<strong>迭代器长度不同</strong>时，<code>zip</code> 会根据更短的迭代器长度而<strong>提前终止</strong></p>
+</li>
+<li><p>Python2 中<code>zip</code>不等同于生成器，而是一次性返回整份列表</p>
+</li>
+</ul>
+<h2 id="12-不要在for和while循环后写else块"><a href="#12-不要在for和while循环后写else块" class="headerlink" title="12. 不要在for和while循环后写else块"></a>12. 不要在for和while循环后写else块</h2><p>Python提供了一种很多编程语言都不支持的功能，那就是可以在循环内部的语句块后面直接编写<code>else</code>块：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Loop %d'</span> <span class="token operator">%</span>i<span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Enter else block'</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+Loop 0
+Loop 1
+Loop 2
+Loop 3
+Enter else block
+</code></pre><p>和 <code>if...else</code>不同，<code>else</code>块的内容会在整个循环结束后立即执行，该用法有一些奇怪的特点是：</p>
+<ul>
+<li><p>如果循环没有正常执行完，程序将不会执行 <code>else</code> 块</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Loop %d'</span> <span class="token operator">%</span>i<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> i <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Enter else block'</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+Loop 0
+Loop 1
+</code></pre></li>
+<li><p>如果循环要遍历的序列是空的，那么会立即执行 <code>else</code> 块：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Never run'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Enter else block'</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+Enter else block
+</code></pre></li>
+<li><p>初始循环条件为 false 的 <code>while</code> 循环，如果后面跟着 <code>else</code> 块，那它也会立即执行：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">while</span> <span class="token boolean">False</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Never run'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Enter else block'</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>Enter else block
+</code></pre></li>
+</ul>
+<h2 id="13-合理利用-try-except-else-finally-结构中的每个代码块"><a href="#13-合理利用-try-except-else-finally-结构中的每个代码块" class="headerlink" title="13. 合理利用 try/except/else/finally 结构中的每个代码块"></a>13. 合理利用 try/except/else/finally 结构中的每个代码块</h2><p>在Python中，会使用到 <code>try</code>， <code>except</code> ，<code>else</code> ，<code>finally</code> 四个结构和它们的组合来进行异常的处理：</p>
+<p>（Python 的官方文档中的<a href="https://docs.python.org/zh-cn/3/tutorial/errors.html" target="_blank" rel="noopener">异常处理</a>对这四种结果进行了详细的介绍）</p>
+<ul>
+<li><p>finally 块：</p>
+<p>如果既要将异常向上传播，又要在异常发生时执行清理工作，那么就可以使用 try/finally 结构。该结构的特点是 finally 字句将作为 <strong>try 语句结束前的最后一项任务</strong>被执行，且无论 try 语句是否产生了异常都不影响 finally 的执行。所以该结构有一项常见的用途，就是确保程序能够可靠地关闭文件句柄 (<code>with</code> 也能够起到相同的作用)。</p>
+<pre class=" language-python"><code class="language-python">handle <span class="token operator">=</span> open<span class="token punctuation">(</span><span class="token string">'xxxx'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># May raise IOError</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    date <span class="token operator">=</span> handle<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># May raise UnicodeDecoderError</span>
+<span class="token keyword">finally</span><span class="token punctuation">:</span>
+    handle<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># Always run before try ended</span>
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>else 块：</p>
+<p>try/expect/else 结构可以清晰描述哪些异常由自己的代码来处理，那些异常向上一级传播：如果 try 块没有异常，则执行else块。有了它，我们<strong>可以尽量缩减 try 块内的代码量，将部分代码放入 else 块中</strong>。</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">load_json_key</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        result_dict <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> ValueError <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> KeyError <span class="token keyword">from</span> e
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> result_dict<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+</code></pre>
+<p>这种 else 子句，可以把 <strong>try/except 后面的内容和 except块本身区分开，使得异常的传播行为更加清晰</strong>。</p>
+</li>
+</ul>
+<ul>
+<li><p>混合使用：<br>try/except/else/finally 的混合使用可以把它们的机制都用上。比如要从文件中读取某项事务的描述信息，并处理该事物，然后就地更新该文件——我们就可以使用 try 语句来读取文件并处理内容，except 处理可能出现的异常，else 用来更新文件并把更新中可能出现的异常回报给上级代码，finally 语句用来最后清理文件句柄。</p>
+<p>这种写法非常有用，即使 else 块在写入数据时发生异常，finally 块也能保证文件句柄正常关闭。</p>
+</li>
+</ul>
+
             </div>
             <hr/>
 
@@ -903,9 +1056,9 @@ flat <span class="token operator">=</span> <span class="token punctuation">[</sp
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="efficient_python_pythonic">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Effective Python 阅读笔记(1)——Pythonic">
                         
-                        <span class="card-title">efficient_python_pythonic</span>
+                        <span class="card-title">Effective Python 阅读笔记(1)——Pythonic</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
