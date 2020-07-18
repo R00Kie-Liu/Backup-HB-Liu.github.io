@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="论文解读——Associative Embedding, 深度不学习">
+    <meta name="keywords" content="《Effective Python》阅读笔记(2)——函数, 深度不学习">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>论文解读——Associative Embedding | 深度不学习</title>
+    <title>《Effective Python》阅读笔记(2)——函数 | 深度不学习</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -242,12 +242,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">论文解读——Associative Embedding</h1>
+                    <h1 class="description center-align post-title">《Effective Python》阅读笔记(2)——函数</h1>
                 </div>
             </div>
         </div>
@@ -364,12 +364,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/">
-                                <span class="chip bg-color">姿态估计</span>
-                            </a>
-                        
-                            <a href="/tags/bottom-up/">
-                                <span class="chip bg-color">bottom-up</span>
+                            <a href="/tags/python/">
+                                <span class="chip bg-color">python</span>
                             </a>
                         
                     </div>
@@ -380,12 +376,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-category">
-                                论文笔记
-                            </a>
-                        
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" class="post-category">
-                                姿态估计
+                            <a href="/categories/Effective-python/" class="post-category">
+                                Effective python
                             </a>
                         
                     </div>
@@ -397,7 +389,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-08
+                    2020-07-18
                 </div>
                 
 
@@ -406,14 +398,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    953
+                    270
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    1 分
                 </div>
                 
 
@@ -428,155 +420,44 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="论文解读—Associative-Embedding"><a href="#论文解读—Associative-Embedding" class="headerlink" title="论文解读—Associative Embedding"></a>论文解读—Associative Embedding</h1><h2 id="1-论文解读"><a href="#1-论文解读" class="headerlink" title="1. 论文解读"></a>1. 论文解读</h2><p>这个方法属于多人姿态估计的Bottom-up的方法，意味着它分为两步：</p>
-<ul>
-<li>定位关键点</li>
-<li>对关键点进行 group</li>
-</ul>
-<h3 id="关键点定位"><a href="#关键点定位" class="headerlink" title="关键点定位"></a>关键点定位</h3><p>它遵循了较为通用的生成 Heatmap 的方式去预测关键点的位置，在损失函数方面也使用了常见的 L2 距离来度量。</p>
-<h3 id="Grouping"><a href="#Grouping" class="headerlink" title="Grouping"></a>Grouping</h3><p>这是这个工作的关键，它可以看作使用了 <strong>实例分割</strong> 的思想来对关键点进行分类。但是，和实例分割最大的不同在于，它没使用额外的像素级的监督信息来训练模型，它采用的是一种可以看作弱监督分割的思想，即：</p>
-<ul>
-<li>隶属于同一个 Instance 的像素点预测值处于同一值域 （pull）</li>
-<li>不同的 Instance 的像素点上的预测值存在一定差异 （push）</li>
-</ul>
-<p>这样的作法也就决定了—它要预测的不是分割任务中每个像素点上类 one-hot 的概率分布，而是跨channel 的在不同像素点 （即各关键点）上的均匀分布。</p>
-<h2 id="2-代码解读"><a href="#2-代码解读" class="headerlink" title="2. 代码解读"></a>2. 代码解读</h2><h3 id="训练阶段—-AE-loss-进行训练"><a href="#训练阶段—-AE-loss-进行训练" class="headerlink" title="训练阶段— AE loss 进行训练"></a>训练阶段— AE loss 进行训练</h3><pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">AELoss</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> loss_type<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>loss_type <span class="token operator">=</span> loss_type
+                <h1 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h1><h2 id="1-使用异常来表示特殊情况，而不是返回-None"><a href="#1-使用异常来表示特殊情况，而不是返回-None" class="headerlink" title="1. 使用异常来表示特殊情况，而不是返回 None"></a>1. 使用异常来表示特殊情况，而不是返回 None</h2><p>编写工具函数（utility function）时，很多程序员喜欢给 None 这个返回值赋予特殊含义 (如返回None值表示代码遇到了特殊情况)：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">divide</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> a <span class="token operator">/</span> b
+    <span class="token keyword">except</span> ZeroDivisionError<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> None
 
-    <span class="token keyword">def</span> <span class="token function">singleTagLoss</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pred_tag<span class="token punctuation">,</span> joints<span class="token punctuation">)</span><span class="token punctuation">:</span>  
-        <span class="token triple-quoted-string string">"""                                     
-        associative embedding loss for one image 
-        1. group损失的计算是依次在batch中的每个图片进行的
-        2. Input tensor size: 
-        (1)pred_tag: [num_keypoints, feature_size * feature_size] 
-        显然pred_tag在计算loss时需要先进行flatten，
-        方便通过index来索引某个关键点对应的tag值
-
-        (2)joints: [num_person, num_keypoints, 2]
-        最后的二维为一个2元tuple——(location, visible)，
-        由于pred_tag被flatten,所以这里的location为关键点
-        坐标(x,y)对应的展开后的索引位置, visible 的值为 0或者1
-        """</span>
-        tags <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> 
-        <span class="token comment" spellcheck="true"># tags用来记录所有人的 reference tag, 即 tag_value 的均值</span>
-        pull <span class="token operator">=</span> <span class="token number">0</span>
-        <span class="token keyword">for</span> joints_per_person <span class="token keyword">in</span> joints<span class="token punctuation">:</span> 
-            <span class="token comment" spellcheck="true"># 第一个循环对单个人的姿态进行处理</span>
-            tmp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-            <span class="token comment" spellcheck="true"># tmp 用来记录每个人所有关键点对应的 pred_tag 的值</span>
-            <span class="token keyword">for</span> joint <span class="token keyword">in</span> joints_per_person<span class="token punctuation">:</span> 
-                <span class="token comment" spellcheck="true"># 第二个循环对姿态中的关键点逐一处理</span>
-                <span class="token keyword">if</span> joint<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
-                    <span class="token comment" spellcheck="true"># (location, visible)[1] = visible，不可见的点不计算损失</span>
-                    tmp<span class="token punctuation">.</span>append<span class="token punctuation">(</span>pred_tag<span class="token punctuation">[</span>joint<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-                    <span class="token comment" spellcheck="true"># tag_value = pred_tag[location] </span>
-            <span class="token keyword">if</span> len<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span> 
-                <span class="token keyword">continue</span>
-            tmp <span class="token operator">=</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
-            tags<span class="token punctuation">.</span>append<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>tmp<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
-            <span class="token comment" spellcheck="true"># 计算该人所有关键点的 tag_value 的均值作为 reference tag</span>
-            pull <span class="token operator">=</span> pull <span class="token operator">+</span> torch<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">(</span>tmp <span class="token operator">-</span> tags<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span> 
-            <span class="token comment" spellcheck="true"># 使用方差计算当前person的 pull loss</span>
-
-        num_tags <span class="token operator">=</span> len<span class="token punctuation">(</span>tags<span class="token punctuation">)</span>
-        <span class="token keyword">if</span> num_tags <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> make_input<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>float<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> \
-                make_input<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>float<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token keyword">elif</span> num_tags <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> make_input<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>float<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> \
-                pull<span class="token operator">/</span><span class="token punctuation">(</span>num_tags<span class="token punctuation">)</span>
-
-        tags <span class="token operator">=</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>tags<span class="token punctuation">)</span>
-
-        size <span class="token operator">=</span> <span class="token punctuation">(</span>num_tags<span class="token punctuation">,</span> num_tags<span class="token punctuation">)</span>
-        A <span class="token operator">=</span> tags<span class="token punctuation">.</span>expand<span class="token punctuation">(</span><span class="token operator">*</span>size<span class="token punctuation">)</span>
-        B <span class="token operator">=</span> A<span class="token punctuation">.</span>permute<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-
-        diff <span class="token operator">=</span> A <span class="token operator">-</span> B
-
-        <span class="token keyword">if</span> self<span class="token punctuation">.</span>loss_type <span class="token operator">==</span> <span class="token string">'exp'</span><span class="token punctuation">:</span>
-            diff <span class="token operator">=</span> torch<span class="token punctuation">.</span>pow<span class="token punctuation">(</span>diff<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-            push <span class="token operator">=</span> torch<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span>diff<span class="token punctuation">)</span>
-            push <span class="token operator">=</span> torch<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>push<span class="token punctuation">)</span> <span class="token operator">-</span> num_tags
-        <span class="token keyword">elif</span> self<span class="token punctuation">.</span>loss_type <span class="token operator">==</span> <span class="token string">'max'</span><span class="token punctuation">:</span>
-            diff <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> torch<span class="token punctuation">.</span>abs<span class="token punctuation">(</span>diff<span class="token punctuation">)</span>
-            push <span class="token operator">=</span> torch<span class="token punctuation">.</span>clamp<span class="token punctuation">(</span>diff<span class="token punctuation">,</span> min<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sum<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> num_tags
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">'Unkown ae loss type'</span><span class="token punctuation">)</span>
-
-        <span class="token keyword">return</span> push<span class="token operator">/</span><span class="token punctuation">(</span><span class="token punctuation">(</span>num_tags <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> num_tags<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.5</span><span class="token punctuation">,</span> \
-            pull<span class="token operator">/</span><span class="token punctuation">(</span>num_tags<span class="token punctuation">)</span>
-
-     <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> tags<span class="token punctuation">,</span> joints<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""
-        accumulate the tag loss for each image in the batch
-        """</span>
-        pushes<span class="token punctuation">,</span> pulls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        joints <span class="token operator">=</span> joints<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        batch_size <span class="token operator">=</span> tags<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>batch_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            push<span class="token punctuation">,</span> pull <span class="token operator">=</span> self<span class="token punctuation">.</span>singleTagLoss<span class="token punctuation">(</span>tags<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> joints<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            pushes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>push<span class="token punctuation">)</span>
-            pulls<span class="token punctuation">.</span>append<span class="token punctuation">(</span>pull<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>pushes<span class="token punctuation">)</span><span class="token punctuation">,</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>pulls<span class="token punctuation">)</span>       
+result <span class="token operator">=</span> divide<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">)</span>
+<span class="token keyword">if</span> result <span class="token keyword">is</span> None<span class="token punctuation">:</span>   
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Invalid input'</span><span class="token punctuation">)</span> 
 </code></pre>
-<h3 id="测试阶段—-根据-tag-进行-grouping"><a href="#测试阶段—-根据-tag-进行-grouping" class="headerlink" title="测试阶段— 根据 tag 进行 grouping"></a>测试阶段— 根据 tag 进行 grouping</h3><pre><code>class HeatmapParser(object):
-    def __init__(self, cfg):
-        self.params = Params(cfg)
-        self.tag_per_joint = cfg.MODEL.TAG_PER_JOINT
-        self.pool = torch.nn.MaxPool2d(
-            cfg.TEST.NMS_KERNEL, 1, cfg.TEST.NMS_PADDING
-        )
-
-    def nms(self, det):
-        maxm = self.pool(det)
-        maxm = torch.eq(maxm, det).float()
-        det = det * maxm
-        return det
-
-    def match(self, tag_k, loc_k, val_k):
-        match = lambda x: match_by_tag(x, self.params)
-        return list(map(match, zip(tag_k, loc_k, val_k)))
-
-    def top_k(self, det, tag):
-        # det = torch.Tensor(det, requires_grad=False)
-        # tag = torch.Tensor(tag, requires_grad=False)
-
-        det = self.nms(det)
-        num_images = det.size(0)
-        num_joints = det.size(1)
-        h = det.size(2)
-        w = det.size(3)
-        det = det.view(num_images, num_joints, -1)
-        val_k, ind = det.topk(self.params.max_num_people, dim=2)
-
-        tag = tag.view(tag.size(0), tag.size(1), w*h, -1)
-        if not self.tag_per_joint:
-            tag = tag.expand(-1, self.params.num_joints, -1, -1)
-
-        tag_k = torch.stack(
-            [
-                torch.gather(tag[:, :, :, i], 2, ind)
-                for i in range(tag.size(3))
-            ],
-            dim=3
-        )
-
-        x = ind % w
-        y = (ind / w).long()
-
-        ind_k = torch.stack((x, y), dim=3)
-
-        ans = {
-            &#39;tag_k&#39;: tag_k.cpu().numpy(),
-            &#39;loc_k&#39;: ind_k.cpu().numpy(),
-            &#39;val_k&#39;: val_k.cpu().numpy()
-        }
-
-        return ans
+<p>以上代码看似没有问题，但是如果 <code>a=0</code> , 当分母不为零得到的 <code>result = 0</code>, 如果仅使用 <code>if</code> 来对这个结果进行判断，我们就会得到错误的结果：</p>
+<pre class=" language-python"><code class="language-python">x<span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">5</span>
+result <span class="token operator">=</span> divide<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+<span class="token keyword">if</span> <span class="token operator">not</span> result<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Invalid input'</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># This is wrong！</span>
 </code></pre>
+<ul>
+<li><p>出错的原因在于 <strong>None 和 0 及空字符串之类的值，在条件表达式里都会被评估成</strong> <code>False</code></p>
+</li>
+<li><p>函数在遇到特殊情况时，<strong>应该直接抛出异常</strong>，让调用者看到并解决：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">divide</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span> 
+        <span class="token keyword">return</span> a<span class="token operator">/</span>b
+    <span class="token keyword">except</span> ZeroDivisionError <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">'Invalid inputs'</span><span class="token punctuation">)</span> <span class="token keyword">from</span> e
+
+x<span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">2</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    result <span class="token operator">=</span> divide<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+<span class="token keyword">except</span> ValueErroe<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Invalid inputs'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Result is %.1f'</span> <span class="token operator">%</span> result<span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ul>
+<h2 id="2-闭包里使用外围作用域中的变量"><a href="#2-闭包里使用外围作用域中的变量" class="headerlink" title="2. 闭包里使用外围作用域中的变量"></a>2. 闭包里使用外围作用域中的变量</h2>
             </div>
             <hr/>
 
@@ -601,7 +482,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://hb-liu.github.io/associative-embedding/">http://hb-liu.github.io/associative-embedding/</a>
+                    <a href="http://hb-liu.github.io/effctive-python-function/">http://hb-liu.github.io/effctive-python-function/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -639,12 +520,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/">
-                                    <span class="chip bg-color">姿态估计</span>
-                                </a>
-                            
-                                <a href="/tags/bottom-up/">
-                                    <span class="chip bg-color">bottom-up</span>
+                                <a href="/tags/python/">
+                                    <span class="chip bg-color">python</span>
                                 </a>
                             
                         </div>
@@ -809,29 +686,30 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/effective-python-pythonic/">
+                <a href="/effctive-python-function/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="《Effective Python》阅读笔记(1)——Pythonic">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="《Effective Python》阅读笔记(2)——函数">
                         
-                        <span class="card-title">《Effective Python》阅读笔记(1)——Pythonic</span>
+                        <span class="card-title">《Effective Python》阅读笔记(2)——函数</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Pythonic风格和代码易读性的权衡
+                            函数不只是def function()
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-18
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-18
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -844,6 +722,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -862,31 +741,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/double-count/">
+                <a href="/effective-python-pythonic/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="图论——双计数">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="《Effective Python》阅读笔记(1)——Pythonic">
                         
-                        <span class="card-title">图论——双计数</span>
+                        <span class="card-title">《Effective Python》阅读笔记(1)——Pythonic</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            组合数学的一种证明方法——双计数
+                            Pythonic风格和代码易读性的权衡
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-18
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%9B%BE%E8%AE%BA/" class="post-category">
-                                    图论
+                            <a href="/categories/Effective-python/" class="post-category">
+                                    Effective python
                                 </a>
                             
                             
@@ -896,12 +775,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%9B%BE%E8%AE%BA/">
-                        <span class="chip bg-color">图论</span>
-                    </a>
-                    
-                    <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/">
-                        <span class="chip bg-color">组合数学</span>
+                    <a href="/tags/python/">
+                        <span class="chip bg-color">python</span>
                     </a>
                     
                 </div>
@@ -1039,13 +914,6 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 </main>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 
 
