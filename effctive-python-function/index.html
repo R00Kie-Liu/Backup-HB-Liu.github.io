@@ -398,14 +398,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    270
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    6 分
                 </div>
                 
 
@@ -457,7 +457,128 @@ x<span class="token punctuation">,</span> y <span class="token operator">=</span
 </code></pre>
 </li>
 </ul>
-<h2 id="2-闭包里使用外围作用域中的变量"><a href="#2-闭包里使用外围作用域中的变量" class="headerlink" title="2. 闭包里使用外围作用域中的变量"></a>2. 闭包里使用外围作用域中的变量</h2>
+<h2 id="2-闭包里使用外围作用域中的变量"><a href="#2-闭包里使用外围作用域中的变量" class="headerlink" title="2. 闭包里使用外围作用域中的变量"></a>2. 闭包里使用外围作用域中的变量</h2><pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sort_priority</span><span class="token punctuation">(</span>values<span class="token punctuation">,</span> group<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">helper</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> x <span class="token keyword">in</span> group<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+    values<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span>helper<span class="token punctuation">)</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python">numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">]</span>
+group <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">}</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>sort_priorty<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> 
+<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span>
+</code></pre>
+<p>以上函数成功运行主要有以下原因：</p>
+<ul>
+<li><strong>闭包（Closure）</strong>：闭包是一种定义在某个<strong>作用域</strong>中的函数，函数引用该<strong>作用域 (Scope)</strong>中变量，所以<code>helper</code>函数可以访问 <em>group</em> 变量，就是因为它是闭包</li>
+<li><strong>一级对象 （First-Class Object）</strong>：Python中函数是一级对象，即函数可被直接引用、可把函数赋给变量、把函数当成参数传给其它函数，还可当作函数的返回值。</li>
+<li><strong>sort</strong>: Python列表有一个内置的<code>sort</code>方法来进行排序，并有一个形参<em>key</em> 来指定进行比较前在每个元素上要调用的函数</li>
+<li><strong>元组比较</strong>：Python这样比较两个元组——从下标为0的对应元素开始，逐个进行比较</li>
+</ul>
+<p>如果我们对以上函数进行改动，想将有元素在<em>group</em>内的信息抛出：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sort_priority</span><span class="token punctuation">(</span>values<span class="token punctuation">,</span> group<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    found <span class="token operator">=</span> <span class="token boolean">False</span>          <span class="token comment" spellcheck="true">#Scope: sort_priority()</span>
+    <span class="token keyword">def</span> <span class="token function">helper</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> x <span class="token keyword">in</span> group<span class="token punctuation">:</span>
+            found <span class="token operator">=</span> <span class="token boolean">True</span>   <span class="token comment" spellcheck="true">#Scope: helper()</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+    values<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span>helper<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> found 
+</code></pre>
+<p>不幸的是，我们会发现，函数的返回值永远是 <code>False</code>, 这是因为：</p>
+<p><strong>Python解释器按以下顺序遍历各作用域</strong>：</p>
+<ol>
+<li><strong>当前函数</strong>作用域， 如 <code>helper</code> 函数</li>
+<li>任何<strong>外围作用域</strong>，如包含当前函数的其它函数，如这里的 <code>sort_priority</code> 函数</li>
+<li><strong>全局作用域</strong>，即包含当前代码的那个模块的作用域， 如整个 <em>.py</em> 文件中的代码</li>
+<li><strong>内置作用域</strong>， Python内部函数的作用域</li>
+</ol>
+<p>显然，当给变量赋值时，如果当前作用域没有这个变量，Python会将此次赋值视为对该变量的定义，<strong>这个变量的作用域就是包含赋值操作的这个函数</strong>， 所以，将 <em>found</em> 赋值为 <code>True</code> 是在<code>helper</code> 闭包里进行的，而不会影响到外围作用域中的 <em>found</em> 变量。</p>
+<p>Python 额外提供了 <code>nonlocal</code> 和 <code>global</code> 语句来获取闭包内的数据：</p>
+<p>对以上函数，只需在 <code>helper()</code> 函数中改写对 <em>found</em> 的赋值：</p>
+<pre class=" language-python"><code class="language-python">nonlocal found <span class="token operator">=</span> <span class="token boolean">True</span>
+</code></pre>
+<p><code>nonlocal</code> 表示给相关变量赋值的时候，在上层作用域中查找该变量，但它不能延伸到模块级别，防止它污染全局作用域</p>
+<p><code>global</code> 表示赋值操作直接修改模块作用域，和 <code>nonlocal</code> 相互补充</p>
+<p>然而，<code>nonlocal</code> 和 <code>global</code> 都不被建议使用，因为它们可能造成难以理解的副作用，我们应该尽可能地<strong>将相关的状态封装成辅助类</strong>，示范如下：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Sorter</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> group<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>found <span class="token operator">=</span> <span class="token boolean">False</span>
+        self<span class="token punctuation">.</span>group <span class="token operator">=</span> group
+    <span class="token keyword">def</span> <span class="token function">__call__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> number<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> x <span class="token keyword">in</span> self<span class="token punctuation">.</span>group<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>found <span class="token operator">=</span> <span class="token boolean">True</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>x<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>x<span class="token punctuation">)</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python">sorter <span class="token operator">=</span> Sorter<span class="token punctuation">(</span>group<span class="token punctuation">)</span>
+number<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span>sorter<span class="token punctuation">)</span>
+<span class="token keyword">assert</span> sorter<span class="token punctuation">.</span>found <span class="token keyword">is</span> <span class="token boolean">True</span>
+</code></pre>
+<p>当然，除了以上方法，我们还可以将上级作用域中的变量设置为<strong>可变量</strong>, 如列表、字典、集等，再在当前作用域进行修改：</p>
+<pre class=" language-python"><code class="language-python">found <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token boolean">False</span><span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">xxx</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        found<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">True</span>
+</code></pre>
+<h2 id="3-用生成器改写直接返回列表的函数"><a href="#3-用生成器改写直接返回列表的函数" class="headerlink" title="3. 用生成器改写直接返回列表的函数"></a>3. 用生成器改写直接返回列表的函数</h2><p>当函数要产生一系列结果时，最简单的就是把他们都放在一份列表里返回。</p>
+<p>如以下函数，用返回列表的形式实现了查出字符串中每个单词中首字母位置的功能：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">index_words</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    results <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">if</span> text<span class="token punctuation">:</span>
+        results<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> index<span class="token punctuation">,</span> letter <span class="token keyword">in</span> enumrated<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> letter <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">:</span>
+            results<span class="token punctuation">.</span>append<span class="token punctuation">(</span>index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> results
+</code></pre>
+<pre><code>address = &#39;Hello Python World&#39;
+index_words(address)
+&gt;&gt;&gt;
+[0, 6, 13]
+</code></pre><p>这个函数有以下问题：</p>
+<ol>
+<li>每次找到新结果都要调用<code>append</code>方法，但函数应该强调的是该方法给列表添加的那个值</li>
+<li>函数首尾还各有一行代码来创建及返回列表</li>
+</ol>
+<p>该类代码用生成器来改写会更好。生成器是使用<code>yield</code>表达式的函数。调用生成器函数时，它并不会真的运行，而是会返回迭代器，可以使用迭代器内置的<code>next</code>函数将生成器推到下一个<code>yield</code>处，生成器传给<code>yield</code>的每一个值，都会由迭代器返回给调用者：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">index_words_iter</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> text<span class="token punctuation">:</span>
+        <span class="token keyword">yield</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> index<span class="token punctuation">,</span> letter <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> letter <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> index<span class="token operator">+</span><span class="token number">1</span>
+</code></pre>
+<p>这个函数清晰在于没有那些和列表交互的代码，原来那个<em>results</em>列表中的元素，现在都分别传给了<code>yield</code>表达式了。</p>
+<p>将调用生成器返回的迭代器传给<code>list</code>，以将其转为列表：</p>
+<pre class=" language-python"><code class="language-python">results <span class="token operator">=</span> list<span class="token punctuation">(</span>index_words_iter<span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<p><code>index_words</code>函数的另一大问题是，返回前要将所有结果存到列表中，输入量巨大时程序有可能耗尽内存，而生成器改写厚的版本可以处理任意长度的输入数据:</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">index_file</span><span class="token punctuation">(</span>handle<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    offset <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> line <span class="token keyword">in</span> handle<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> line<span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> offset
+        <span class="token keyword">for</span> letter <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+            offset <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> letter <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">:</span>
+                <span class="token keyword">yield</span> offset
+</code></pre>
+<p>该函数执行所消耗的内存，由单行输入值的最大字符数节界定。</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'/home/address.txt'</span><span class="token punctuation">,</span><span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    it <span class="token operator">=</span> index_file<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+    results <span class="token operator">=</span> islice<span class="token punctuation">(</span>it<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>list<span class="token punctuation">(</span>results<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">13</span><span class="token punctuation">]</span>
+</code></pre>
+<p>注：<code>islice</code> 是<a href="https://docs.python.org/zh-cn/3/library/itertools.html" target="_blank" rel="noopener">python <code>itertools</code> 模块中的函数</a>，该函数返回根据最短输入序列长度停止的迭代器。</p>
+<h2 id="4-在参数上迭代时要小心"><a href="#4-在参数上迭代时要小心" class="headerlink" title="4. 在参数上迭代时要小心"></a>4. 在参数上迭代时要小心</h2>
             </div>
             <hr/>
 
@@ -741,31 +862,35 @@ x<span class="token punctuation">,</span> y <span class="token operator">=</span
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/effective-python-pythonic/">
+                <a href="/associative-embedding/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="《Effective Python》阅读笔记(1)——Pythonic">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="论文解读——Associative Embedding">
                         
-                        <span class="card-title">《Effective Python》阅读笔记(1)——Pythonic</span>
+                        <span class="card-title">论文解读——Associative Embedding</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Pythonic风格和代码易读性的权衡
+                            详解Associative Embedding 论文grouping方式和相关代码
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-08
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Effective-python/" class="post-category">
-                                    Effective python
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    论文笔记
+                                </a>
+                            
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" class="post-category">
+                                    姿态估计
                                 </a>
                             
                             
@@ -775,8 +900,12 @@ x<span class="token punctuation">,</span> y <span class="token operator">=</span
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/python/">
-                        <span class="chip bg-color">python</span>
+                    <a href="/tags/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/">
+                        <span class="chip bg-color">姿态估计</span>
+                    </a>
+                    
+                    <a href="/tags/bottom-up/">
+                        <span class="chip bg-color">bottom-up</span>
                     </a>
                     
                 </div>
