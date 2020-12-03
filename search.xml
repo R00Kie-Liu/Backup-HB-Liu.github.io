@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Effective Python阅读笔记(1)——类与继承</title>
+      <link href="/effctive-python-class/"/>
+      <url>/effctive-python-class/</url>
+      
+        <content type="html"><![CDATA[<h1 id="类与继承"><a href="#类与继承" class="headerlink" title="类与继承"></a>类与继承</h1><h2 id="1-用辅助类维护程序状态，而不是字典-元组"><a href="#1-用辅助类维护程序状态，而不是字典-元组" class="headerlink" title="1. 用辅助类维护程序状态，而不是字典/元组"></a>1. 用辅助类维护程序状态，而不是字典/元组</h2>]]></content>
+      
+      
+      <categories>
+          
+          <category> Effective python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Effective Python阅读笔记(2)——函数</title>
       <link href="/effctive-python-function/"/>
       <url>/effctive-python-function/</url>
