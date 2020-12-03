@@ -294,10 +294,19 @@
                 
                 
                 
+                <a href="/categories/%E5%9B%BE%E8%AE%BA/" title="图论: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            style="background-color: #F9EBEA;">图论
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
                 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" title="论文笔记: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F9EBEA;">论文笔记
+                            style="background-color: #F5EEF8;">论文笔记
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -306,17 +315,8 @@
                 <a href="/categories/Effective-python/" title="Effective python: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F5EEF8;">Effective python
+                            style="background-color: #D5F5E3;">Effective python
                         <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E5%9B%BE%E8%AE%BA/" title="图论: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            style="background-color: #D5F5E3;">图论
-                        <span class="tag-length">2</span>
                     </span>
                 </a>
                 
@@ -630,6 +630,22 @@ $(function () {
     
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 
