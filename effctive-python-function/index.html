@@ -398,14 +398,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    4.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    16 分
                 </div>
                 
 
@@ -578,7 +578,231 @@ index_words(address)
 <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">13</span><span class="token punctuation">]</span>
 </code></pre>
 <p>注：<code>islice</code> 是<a href="https://docs.python.org/zh-cn/3/library/itertools.html" target="_blank" rel="noopener">python <code>itertools</code> 模块中的函数</a>，该函数返回根据最短输入序列长度停止的迭代器。</p>
-<h2 id="4-在参数上迭代时要小心"><a href="#4-在参数上迭代时要小心" class="headerlink" title="4. 在参数上迭代时要小心"></a>4. 在参数上迭代时要小心</h2>
+<h2 id="4-在参数上迭代时要小心"><a href="#4-在参数上迭代时要小心" class="headerlink" title="4. 在参数上迭代时要小心"></a>4. 在参数上迭代时要小心</h2><pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">read_numbers</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span>data_path<span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> int<span class="token punctuation">(</span>line<span class="token punctuation">)</span>    
+it <span class="token operator">=</span> read_numbers<span class="token punctuation">(</span><span class="token string">'home/numbers.txt'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>list<span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>list<span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+[0, 6, 13]
+&gt;&gt;&gt;
+[]
+</code></pre><p>奇怪的是，第二个<code>print</code>函数没有输出任何结果，这是因为<strong>迭代器只能产生一轮结果</strong>， 继续迭代第二轮是不会有任何结果的。但是，<strong>在已经用完的迭代器上继续进行迭代时，也是不会报错的</strong>。这是因为<code>for</code>循环、<code>list</code>构造器和Python标准库里的其它函数是没法识别出当前迭代器原本就是空还是已经把输出值用完。</p>
+<p>我们可以使用该迭代器制作一份列表，将它所有内容遍历并复制到列表中，这样之后的迭代就可以在列表上进行了。但这么做的问题在于，当迭代器具有大量数据时，可能导致内存耗尽。</p>
+<p>优雅的方法即是新编一种实现<strong>迭代器协议(iterator protocol)</strong> 的<strong><a href="https://www.zlovezl.cn/articles/mastering-container-types/" target="_blank" rel="noopener">容器类</a></strong>。Python 在 <code>for</code> 循环及相关表达式中遍历某种容器的内容时，就要依靠迭代器协议。在执行类似于</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">for</span> x <span class="token keyword">in</span> foo
+</code></pre>
+<p>这种语句时，实际流程是：</p>
+<pre><code>iter(foo) --&gt; foo.__iter__ --&gt; foo.__next__
+</code></pre><p><code>for</code>循环会在迭代器对象上反复调用内置的<code>next</code>函数，直至耗尽并抛出<em>StopIteration</em>异常。所以，我们<strong>只需要令自己的类把<code>__iter__</code>方法实现为生成器</strong>，就能够满足：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">ReadNumbers</span><span class="token punctuation">(</span>object<span class="token punctuation">:</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>path <span class="token operator">=</span> data_path
+
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> open<span class="token punctuation">(</span>self<span class="token punctuation">.</span>path<span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+                <span class="token keyword">yield</span> int<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">norm</span><span class="token punctuation">(</span>numbers<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    total <span class="token operator">=</span> sum<span class="token punctuation">(</span>numbers<span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># New iterator</span>
+    results <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> value <span class="token keyword">in</span> numbers<span class="token punctuation">:</span>   <span class="token comment" spellcheck="true"># New iterator</span>
+        percent <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">*</span> values<span class="token operator">/</span>total
+        results<span class="token punctuation">.</span>append<span class="token punctuation">(</span>percent<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> results
+</code></pre>
+<pre class=" language-python"><code class="language-python">numbers <span class="token operator">=</span> Readnumbers<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+percent <span class="token operator">=</span> norm<span class="token punctuation">(</span>numbers<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>percent<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token punctuation">[</span><span class="token number">11.53</span><span class="token punctuation">,</span> <span class="token number">26.92</span><span class="token punctuation">,</span> <span class="token number">61.54</span><span class="token punctuation">]</span>
+</code></pre>
+<p>以上新型容器，可以直接传入<code>norm</code>函数进行多次迭代，这是因为<code>sum</code>函数会调用 <code>ReadNumbers.__iter__</code>, 而该方法会返回一个新的迭代器对象，而调整数值所用的 <code>for</code> 循环，也会调用<code>__iter__</code>, 从而得到另一个新的迭代器对象。这两个迭代器对象会各自前进并走完一整轮，所以它们可以看到全部的输入数据。唯一缺点就是需要多次读取输入数据。</p>
+<p>根据以上原理，想要判断某个值是迭代器还是容器，可以拿该值为参数，两次调用<code>iter</code>函数，若结果相同，则是迭代器，若结果不相同，则是容器。（迭代器对象传给内置<code>iter</code>函数，会返回该迭代器，如果传给<code>iter</code>的是某个容器对象，那么每次都会返回新的迭代器本身）：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">test_container</span><span class="token punctuation">(</span>numbers<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> iter<span class="token punctuation">(</span>numbers<span class="token punctuation">)</span> <span class="token operator">==</span> iter<span class="token punctuation">(</span>numbers<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># An iterator --- Bad!</span>
+        <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Must supply a container'</span><span class="token punctuation">)</span>
+     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'good'</span><span class="token punctuation">)</span>    
+</code></pre>
+<pre class=" language-python"><code class="language-python">numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">]</span>
+test_container<span class="token punctuation">(</span>numbers<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>good
+test_container<span class="token punctuation">(</span>Readnumbers<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>good
+test_container<span class="token punctuation">(</span>iter<span class="token punctuation">(</span>numbers<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>TypeError<span class="token punctuation">(</span><span class="token string">'Must supply a container'</span><span class="token punctuation">)</span>
+</code></pre>
+<h2 id="5-尝试使用数量可变的位置参数"><a href="#5-尝试使用数量可变的位置参数" class="headerlink" title="5. 尝试使用数量可变的位置参数"></a>5. 尝试使用数量可变的位置参数</h2><p>补充资料：<a href="https://kodango.com/variable-arguments-in-python" target="_blank" rel="noopener">关于Python中的可变参数——<code>*args</code> 和 <code>*kwargs</code></a></p>
+<p>令函数接收可选的<strong>位置参数</strong> <code>*args</code>， 有时能够使得代码更加清晰。</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">log</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> values<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token operator">not</span> values<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        values_str <span class="token operator">=</span> <span class="token string">','</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> values<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>message<span class="token punctuation">,</span> values_str<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+log<span class="token punctuation">(</span><span class="token string">'My numbers are'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+log<span class="token punctuation">(</span><span class="token string">'Hi there'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span>
+My numbers are <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span>
+Hi there
+</code></pre>
+<p>对于以上函数，即使没有值需要打印，也需要传入一份空列表，最好是能够令调用者在不需要的时候直接把第二个参数省略掉，则我们<strong>可以在<em>values</em>前加上<code>*</code>号，使其变为可变参数，即它可以不需要被指定，且该参数后面可以跟随任意数量的位置参数:</strong></p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">log</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> <span class="token operator">*</span>values<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token operator">not</span> values<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        values_str <span class="token operator">=</span> <span class="token string">','</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> values<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>message<span class="token punctuation">,</span> values_str<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+log<span class="token punctuation">(</span><span class="token string">'My numbers are'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># No need for list</span>
+log<span class="token punctuation">(</span><span class="token string">'Hi there'</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># Much better</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span>
+My numbers are <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span>
+Hi there
+</code></pre>
+<p>问题1：<strong>变长函数在传给函数时，总是要先转成一个元组</strong></p>
+<p>那么当想把已有列表传给该变长参数时，调用的时候可以给列表前也加上<code>*</code>操作符，这样Python就会将该列表里的元素视为位置参数：</p>
+<pre class=" language-python"><code class="language-python">numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">37</span><span class="token punctuation">]</span>
+log<span class="token punctuation">(</span><span class="token string">'My list number are'</span><span class="token punctuation">,</span> numbers<span class="token punctuation">)</span>
+log<span class="token punctuation">(</span><span class="token string">'My list number are'</span><span class="token punctuation">,</span> <span class="token operator">*</span>numbers<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># add '*' before the list</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span>
+My list number are <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">37</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true">#values=([1,6,37],)</span>
+My list number are <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">37</span>  <span class="token comment" spellcheck="true">#values=(1,6,37)</span>
+</code></pre>
+<p>同时，当用带有<code>*</code>操作符的生成器为参数时，该生成器会被完整迭代一轮，并把每一个值放入元组，可能消耗大量内存：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">gen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">yield</span> i
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+it <span class="token operator">=</span> gen<span class="token punctuation">(</span><span class="token punctuation">)</span>
+func<span class="token punctuation">(</span>it<span class="token punctuation">)</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span>
+<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span>
+</code></pre>
+<p><strong>所以，只有当我们确定所输入的参数个数较少时，才令函数接收<code>*args*</code>式的变长参数</strong>。</p>
+<p>问题2： 如果之后函数要添加新的位置参数，原来调用该函数的旧代码就需要全部改动。</p>
+<p>为了避免这种情况，<strong>在扩展这种已经接收了<code>*args</code>的函数时，应该使用只能以关键字形式指定的参数。</strong> </p>
+<h2 id="6-关键字参数表达可选行为"><a href="#6-关键字参数表达可选行为" class="headerlink" title="6. 关键字参数表达可选行为"></a>6. 关键字参数表达可选行为</h2><p>Python中所有位置参数都可以按关键字传递，采用关键字形式指定参数有以下好处：</p>
+<ol>
+<li>代码含义更加清晰</li>
+<li>可以在函数中提供默认值</li>
+<li>扩充函数参数时，仍可以与原先调用函数的代码兼容</li>
+</ol>
+<p>使用关键字形式参数需要注意以下几点：</p>
+<ol>
+<li>位置参数必须出现在关键字参数之前</li>
+<li>每个参数只能出现一次</li>
+<li>对于接受<code>*args</code>的参数，如果要在扩充其参数的时候，与已有的那些函数调用代码保持兼容，那么就应该把新参数定义为可选的关键字参数，或者更好的是采用只能通过关键字形式来指定的参数 （见tips8）</li>
+</ol>
+<h2 id="7-用None和文档字符串来描述具有动态默认值的参数"><a href="#7-用None和文档字符串来描述具有动态默认值的参数" class="headerlink" title="7. 用None和文档字符串来描述具有动态默认值的参数"></a>7. 用None和文档字符串来描述具有动态默认值的参数</h2><p>有时我们想用动态类型来作为关键字参数的默认值，如，需要打印函数运行时的当前时间：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+<span class="token keyword">def</span> <span class="token function">log</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> when<span class="token operator">=</span>datatime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s: %s'</span> <span class="token operator">%</span><span class="token punctuation">(</span>when<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+log<span class="token punctuation">(</span><span class="token string">'Hi there'</span><span class="token punctuation">)</span>
+sleep<span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span>
+log<span class="token punctuation">(</span><span class="token string">'Hi again'</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+2020-10-03 12:48:03.865183: Hi there
+2020-10-03 12:48:03.865183: Hi again
+
+</code></pre><p>可以看到，两条消息的时间戳是一样的，这是因为<code>datatime.now()</code>只在函数定义的时候执行了一次。</p>
+<p><strong>参数的默认值会在每个模块加载进来的时候求出</strong>，包含这段代码的模块一旦加载进来，参数的默认值就不变了，程序不会再次执行<code>datatime.now()</code></p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> json
+<span class="token keyword">def</span> <span class="token function">decode</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> ValueError<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># raise ValueError</span>
+        <span class="token keyword">return</span> default
+
+foo <span class="token operator">=</span> decode<span class="token punctuation">(</span><span class="token string">'bad data'</span><span class="token punctuation">)</span>
+foo<span class="token punctuation">[</span><span class="token string">'stuff'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span>
+bar <span class="token operator">=</span> decode<span class="token punctuation">(</span><span class="token string">'also bad'</span><span class="token punctuation">)</span>
+bar<span class="token punctuation">[</span><span class="token string">'meep'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>bar<span class="token punctuation">)</span>
+<span class="token keyword">assert</span> foo <span class="token keyword">is</span> bar
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token punctuation">{</span><span class="token string">'stuff'</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'meep'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">'stuff'</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'meep'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">}</span>
+</code></pre>
+<p>和上面的例子类似，该函数中<em>default</em>参数的默认值值在模块加载时评估一次，所以凡是以默认形式来调用<code>decode</code>的代码，都将<strong>共享一份词典</strong>。</p>
+<p><strong>处理该问题的正确方式是把关键字参数的默认值设为<code>None</code>， 并在函数的文档字符串中描述它的实际行为：</strong></p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">decode</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> default<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Load JSON data from a srting.
+    Args:
+        data: JSON data
+        default: vaule to return if decoding fails.
+            Defaults to an empty dictionary.
+    """</span>
+    <span class="token keyword">if</span> default <span class="token keyword">is</span> None<span class="token punctuation">:</span>
+        default <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> ValueError<span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># raise ValueError</span>
+        <span class="token keyword">return</span> default
+</code></pre>
+<h2 id="8-用只能以关键字形式指定的参数来确保代码明晰"><a href="#8-用只能以关键字形式指定的参数来确保代码明晰" class="headerlink" title="8. 用只能以关键字形式指定的参数来确保代码明晰"></a>8. 用只能以关键字形式指定的参数来确保代码明晰</h2><p>根据 Tips-5 我们知道可以使用 <code>*</code>来指定数量可变的位置参数，这种写法的缺陷在于由于参数是根据位置传入，所以当函数参数需要拓展时，就很容易发生错误。根据 Tips-6 我们可以进一步改进，即使用关键字参数来使得函数每个要传入参数的意义都更明确，但这些参数依旧可以通过位置参数传入。</p>
+<p>在<strong><em>Python3</em></strong>中，<code>*</code> 还能来定义一种<strong>只能以关键字形式指定的可选参数</strong>：<strong>在参数列表里加入<code>*</code>号，标志着位置参数到此结束，之后的那些参数，都只能以关键字形式来指定</strong></p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">safe_division_c</span><span class="token punctuation">(</span>number<span class="token punctuation">,</span> divisor<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">,</span> ignore_overflow<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> ignore_zero_division<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>：
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> number <span class="token operator">/</span> divisor
+    <span class="token keyword">except</span> OverflowError<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> ignore_overflow<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span>
+    <span class="token keyword">except</span> ZeroDivisionError<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> ignore_zero_division<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span>
+</code></pre>
+<p>这时我们就不能直接用位置参数来指定关键字参数了, 只能通过关键字指定，这样代码变得更加明确了：</p>
+<pre class=" language-python"><code class="language-python">safe_division_c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token boolean">False</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+TypeError<span class="token punctuation">:</span> safe_division_c<span class="token punctuation">(</span><span class="token punctuation">)</span> takes <span class="token number">2</span> positional arguments but <span class="token number">4</span> were given
+</code></pre>
+<pre class=" language-python"><code class="language-python">safe_division_c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">500</span><span class="token punctuation">,</span> ignore_overflow<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> ignore_zero_division<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+<span class="token number">0.0</span>
+</code></pre>
+<p>然而，<em>Python2</em> 中却并没有明确的语法来指定只能以关键字形式指定的参数。但是，我们可以在参数列表中使用<code>**</code>操作符，并且令函数在遇到无效调用时抛出<em>TypeError</em>, 这样就可以实现和<em>Python3</em>相同功能了。</p>
+<p><code>**</code>和<code>*</code>操作符用法类似，但它不是用来指定数量可变的位置参数的，而是用来<strong>接收任意数量的关键字参数</strong>，<strong>即使某些关键字参数没有定义在函数中，它也依然能够接受</strong>：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">print_args</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Positional'</span><span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Keyword'</span><span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
+
+print_args<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> foo<span class="token operator">=</span><span class="token string">'bar'</span><span class="token punctuation">,</span> stuff<span class="token operator">=</span><span class="token string">'meep'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span>
+Positional<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+Keyword<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">'foo'</span><span class="token punctuation">:</span><span class="token punctuation">}</span>
+</code></pre>
+<pre><code>Positional (1, 2)
+Keyword {&#39;foo&#39;: &#39;bar&#39;, &#39;stuff&#39;: &#39;meep&#39;}
+</code></pre><p>当然，为了防止调用者提供无效的参数值，我们还可以先令函数接收<code>**kwargs</code>参数，然后用<code>pop</code>方法把期望的关键字从<code>kwargs</code> 字典里取走，如果字典里的键没有这个关键字，那么<code>pop</code>方法的第二个参数就会成为默认值。最后，再确认<code>kwargs</code>字典里没有参数了：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">safe_division_d</span><span class="token punctuation">(</span>number<span class="token punctuation">,</span> divisor<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    ignore_flow <span class="token operator">=</span> kwargs<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token string">'ignore_flow'</span><span class="token punctuation">,</span> <span class="token boolean">False</span><span class="token punctuation">)</span>
+    ignore_zero_div <span class="token operator">=</span> kwargs<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token string">'ignore_zero_div'</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> kwargs<span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Unexpected **kwargs: %r'</span> <span class="token operator">%</span> kwargs<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># ···</span>
+</code></pre>
+<p>同样地，此时也不能以位置参数的形式来指点关键字参数的值，而且，基于以上实现，调用者还不能传入不符合预期的关键字参数。</p>
+
             </div>
             <hr/>
 
