@@ -398,14 +398,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    921
+                    2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    7 分
                 </div>
                 
 
@@ -492,7 +492,98 @@ math<span class="token punctuation">.</span>report_grade<span class="token punct
 <span class="token number">90</span>
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/HB-Liu/Images/master/img/image-20201205162642684.png" alt="nametupled的局限" style="zoom:40%;" /></p>
-<h2 id="2-简单的接口应该接收函数，而不是类的实例"><a href="#2-简单的接口应该接收函数，而不是类的实例" class="headerlink" title="2. 简单的接口应该接收函数，而不是类的实例"></a>2. 简单的接口应该接收函数，而不是类的实例</h2>
+<h2 id="2-简单的接口应该接收函数，而不是类的实例"><a href="#2-简单的接口应该接收函数，而不是类的实例" class="headerlink" title="2. 简单的接口应该接收函数，而不是类的实例"></a>2. 简单的接口应该接收函数，而不是类的实例</h2><p><em>Python</em> 中许多内置的API都允许调用者传入函数，API在执行的时候，会通过这些<strong>挂钩(hook)函数</strong>，回调函数内的代码。<em>list</em> 类型的<code>sort</code>方法中就可以传入一个函数作为可选参数<code>key</code>的挂钩：</p>
+<pre class=" language-python"><code class="language-python">names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'rookie'</span><span class="token punctuation">,</span> <span class="token string">'theshy'</span><span class="token punctuation">,</span> <span class="token string">'puff'</span><span class="token punctuation">,</span> <span class="token string">'jackeylove'</span><span class="token punctuation">]</span>
+names<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> len<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>names<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&gt;&gt;&gt;
+[&#39;puff&#39;, &#39;rookie&#39;, &#39;theshy&#39;, &#39;jackeylove&#39;]
+</code></pre><p>用函数做挂钩是<em>Python</em>区别于其它编程语言的一大特殊，因为在<em>Python</em>中<strong>函数是一级对象</strong>，可以直接传递和引用，用函数做挂钩是比较合适的，因为她们很容易就能够描述出这个挂钩的功能。</p>
+<p><code>defaultdict</code>类是另一个挂钩函数使用的典例。这种数据结构允许使用者提供一个函数，在查询本字典的时候，如果字典中没有待查的键，不会抛出<code>KeyError</code>异常，而是用这个函数为该键创建新值——即<code>defaultdict</code>实现的是<strong>字典的默认值功能</strong>（如果不使用它，就需要写一段判断语句来对键是否存在进行判断然后建立新键，比较繁琐。关于<code>defaultdict</code>更详细的介绍见<a href="https://kodango.com/understand-defaultdict-in-python" target="_blank" rel="noopener">这里</a>）。</p>
+<p>以下定义的函数作为挂钩函数，会在字典里找不到待查询的键时返回0作为该键对于的值，并打印一条信息：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">log_missing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Key added'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token number">0</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> defaultdict
+current <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'green'</span><span class="token punctuation">:</span><span class="token number">12</span><span class="token punctuation">,</span> <span class="token string">'blue'</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">}</span>
+increments <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'red'</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'blue'</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'orange'</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+result <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>log_missing<span class="token punctuation">,</span> current<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Before'</span><span class="token punctuation">,</span> dict<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> key<span class="token punctuation">,</span> amount <span class="token keyword">in</span> increments<span class="token punctuation">:</span>
+    result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">+=</span> amount   <span class="token comment" spellcheck="true"># 当key不存在于字典result中时，会自动创建该键，并赋值为0，所以不会抛出KeyError</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'After'</span><span class="token punctuation">,</span> dict<span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>Before {&#39;green&#39;: 12, &#39;blue&#39;: 3}
+Key added
+Key added
+After {&#39;green&#39;: 12, &#39;blue&#39;: 20, &#39;red&#39;: 5, &#39;orange&#39;: 9}
+</code></pre><p>提供<code>log_missing</code>这样的函数给API，它能够把附带的效果和确定的行为分隔开，使得API更易构建和测试。</p>
+<p>如果继续拓展，我们还需要统计出该字典一共遇到了多少个缺失的键，一种实现方式是<strong>使用带状态的闭包</strong>。</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">increment_with_report</span><span class="token punctuation">(</span>current<span class="token punctuation">,</span> increments<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    add_count <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token keyword">def</span> <span class="token function">missing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        nonlocal add_count
+        add_count <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+
+    results <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>missing<span class="token punctuation">,</span> current<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> key<span class="token punctuation">,</span> amount <span class="token keyword">in</span> increments<span class="token punctuation">:</span>
+        results<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">+=</span> amount
+
+    <span class="token keyword">return</span> results<span class="token punctuation">,</span> add_count
+</code></pre>
+<p>令接口接收函数的另一大好处就是，尽管<code>defaultdict</code>并不知道<code>missing</code>挂钩函数里保存了状态，但是以上函数仍可以产生预期结果。但把带状态的闭包函数用作挂钩有一个缺点，就是读起来比无状态的函数更加难懂一些。</p>
+<p>此外，我们还可以<strong>通过定义一个小型的类，把需要追踪的状态封装起来</strong>：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">CountMissing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>add_count <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token keyword">def</span> <span class="token function">missing</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>add_count <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+</code></pre>
+<p>由于<em>Python</em>的函数是一级对象，所以可以直接在<code>CountMissing</code>上引用<code>CountMissing.missing</code>方法，并将其传给<code>defaultdict</code>做挂钩。<strong>令方法满足函数接口，是非常容易的</strong>：</p>
+<pre class=" language-python"><code class="language-python">counter <span class="token operator">=</span> CountMissing<span class="token punctuation">(</span><span class="token punctuation">)</span>
+result <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>counter<span class="token punctuation">.</span>missing<span class="token punctuation">,</span> current<span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> key<span class="token punctuation">,</span> amount <span class="token keyword">in</span> increments<span class="token punctuation">:</span>
+    result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+<span class="token keyword">assert</span> counter<span class="token punctuation">.</span>add_count <span class="token operator">==</span> <span class="token number">2</span>
+</code></pre>
+<p>虽然用辅助类改写之前带状态的闭包函数更清晰，但是单看这个类，我们是不太容易理解它的意图的，<code>missing</code>方法由谁调用？<code>CountMissing</code>对象由谁来构建？这些问题都需要看过<code>defaultdict</code>的用法后才能明白。</p>
+<p><strong><strong>call</strong>方法：</strong></p>
+<p>为了解决这个问题，我们可以定义名为<code>__call__</code>的特殊方法——该方法<strong>可让相关对象能够像函数那样得到调用</strong>：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">BetterCountMissing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>add_count <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token keyword">def</span> <span class="token function">__call__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>add_count <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+</code></pre>
+<pre class=" language-python"><code class="language-python">counter <span class="token operator">=</span> BetterCountMissing<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Before calling'</span><span class="token punctuation">,</span>counter<span class="token punctuation">.</span>add_count<span class="token punctuation">)</span>
+<span class="token keyword">assert</span> callable<span class="token punctuation">(</span>counter<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 确认该对象能被直接调用</span>
+counter<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'After calling'</span><span class="token punctuation">,</span> counter<span class="token punctuation">.</span>add_count<span class="token punctuation">)</span>
+
+<span class="token operator">>></span><span class="token operator">></span>
+Before calling <span class="token number">0</span>
+After calling <span class="token number">1</span>
+</code></pre>
+<p>所以，我们就可以把<code>BetterCountMissing</code>实例用作<code>defaultdict</code>的默认值挂钩：</p>
+<pre class=" language-python"><code class="language-python">counter <span class="token operator">=</span> BetterCountMissing<span class="token punctuation">(</span><span class="token punctuation">)</span>
+result <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>counter<span class="token punctuation">,</span> current<span class="token punctuation">)</span>
+<span class="token keyword">for</span> key<span class="token punctuation">,</span> amount <span class="token keyword">in</span> increments<span class="token punctuation">:</span>
+    result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+<span class="token keyword">assert</span> counter<span class="token punctuation">.</span>add_count <span class="token operator">==</span> <span class="token number">2</span>
+</code></pre>
+<p>以上代码比<code>CountMissing</code>清晰许多，因为<code>__call__</code>方法表明<code>BetterCountMissing</code>类的实列也会像函数那样，在某处充当API的挂钩，所以，读到这段代码的人就可以从<code>__call__</code>方法来理解<code>BetterCountMissing</code>类的主要功能。</p>
+<p><strong><code>__call__</code>方法强烈暗示了一个类的用途</strong>，它告诉我们这个类的功能就相当于一个带有状态的闭包。</p>
+
             </div>
             <hr/>
 
